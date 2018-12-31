@@ -13,17 +13,22 @@
     <div class="container">
       <div class="header clearfix">
         <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation"><a href="/">Home</a></li>
-            <li role="presentation"><a href="/about">About</a></li>
-            <li role="presentation"><a href="http://flask.pocoo.org" target="_blank">More About Flask</a></li>
+          <ul class="nav nav-pills pull-left">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
           </ul>
+          <br><hr>
         </nav>
       </div>
       {% block body %}
+        <!--All templates that extend base render here-->
       {% endblock %}
       <footer class="footer">
-        <p>© 2016 Your Name Here</p>
+        <p>
+          © 2018 Daniel Vignoles, Shivron Sugrim
+          <br>
+          CUNY Advanced Science Research Center
+        </p>
       </footer>
     </div> <!-- /container -->
   </body>
