@@ -1,8 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block body %}
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>CUNY ASRC Weather Station ASFASLD;SKFJLASDKFJ </title>
-	<link rel="stylesheet" type="text/css" href="/ws/app/static/css/main.css">
+	<title>CUNY ASRC Weather Station</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
 	<div class="container">
@@ -105,4 +109,6 @@
 	<div style="margin-top:500px;"></div>
 </body>
 </html>
+
+{% endblock %}
  
