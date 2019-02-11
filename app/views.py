@@ -12,3 +12,7 @@ def index():
 @app.route('/about')
 def about():
     return render_template("about.html")
+
+@app.route('/instruments')
+def Instruments():
+	return render_template("Instruments.html")
