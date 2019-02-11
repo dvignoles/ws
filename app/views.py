@@ -14,5 +14,5 @@ def about():
     return render_template("about.html")
 
 @app.route('/instruments')
-def Instruments():
+def instruments():
 	return render_template("Instruments.html")

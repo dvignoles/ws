@@ -3,11 +3,46 @@
 {% extends "base.html" %}
 {% block title %}About{% endblock %}
 {% block body %}
+
+<!DOCTYPE html>
+<html>
+<body>
+
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+
 <div class="jumbotron">
   <h1>The About Page</h1>
-  <p class="lead">You can learn more about my website here. 
-  	Shivron's Change
-  lorem. </p>
+  	<p class="lead">You can learn more about my website here.</p>
+  	<hr> </hr>
+  	
+  	<h3> CUNY ASRC </h3>
+  	<img src="asrc-bldg.jpg" alt="CUNY ASRC Building">
+  	<p> Summary of ASRC </p>
+  	<hr> </hr>
+
+  	<h3> Davis Vantage Pro2+ </h3>
+  	<img src="asrc-bldg.jpg" alt="CUNY ASRC Building">
+  	<p> Summary of Weather Station </p>
+  	<hr> </hr>
+  	
+  	<h3> Bernice Rozensweig </h3>
+  	<img src="asrc-bldg.jpg" alt="Bernice Rozensweig">
+  	<p> Summary of Bernice </p>
+  	<hr> </hr>
+  	
+  	<h3> Daniel Vignoles </h3>
+  	<img src="asrc-bldg.jpg" alt="Daniel Vignoles">
+  	<p> Summary of Daniel </p>
+  	<hr> </hr>
+
+  	<h3> Shivron Sugrim </h3>
+  	<img src="asrc-bldg.jpg" alt="Shivron Sugrim">
+  	<p> Mechanical Engineering student interested about mankind's effect on climate change and how technology can be used to reduce our carbon footprint.</p>
+  	<hr> </hr>
+
 </div>
+
+
+</body>
+</html>
 {% endblock %}

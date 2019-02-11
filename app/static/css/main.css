@@ -6,7 +6,7 @@
 */
 
 body{
-	background-image: url("Midtown.jpg");
+	background-image: url("../Images/Midtown.jpg");
 	background-color:#f4f4f4;
 	color:#555555;
 
@@ -153,7 +153,7 @@ a:visited{
 }
 
 #sidebar{
-	float:right;
+	float:left;
 	width:30%;
 	background-color:#333;
 	color:#fff;
