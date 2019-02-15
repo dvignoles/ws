@@ -16,3 +16,7 @@ def about():
 @app.route('/instruments')
 def instruments():
 	return render_template("Instruments.html")
+
+@app.route('/test')
+def test():
+	return render_template("test.html")
