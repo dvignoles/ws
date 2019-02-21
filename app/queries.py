@@ -1,7 +1,14 @@
 from app.models import Observation
 
 
+def get_current(session):
+    """Return Dictionary of values from most recent observation"""
+    pass
+
+
 def get_alltime(session,key,ascending=False):
+
+    #TODO: Allow for individual key search or return all records of numeric data only
     q = session.query(Observation).order_by(key).all()
     if(ascending):
         return(getattr(q[0],key))
