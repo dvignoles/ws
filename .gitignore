@@ -117,3 +117,6 @@ dmypy.json
 #MAC
 .DS_Store
 .vscode/settings.json
+
+#config file
+config.py
