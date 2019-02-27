@@ -1,13 +1,16 @@
-#ASRC Weather Station Website
+# ASRC Weather Station Website
 
-###Set up
+### SET UP
 
-'cd path/to/ws
-touch config.py'
+```
+cd path/to/ws
+touch config.py
+```
 
-populate config.py with: 
+populate `config.py` with: 
 
-'#config.py
+```
+#config.py
 
 class Config(object):
     DEBUG = False
@@ -24,20 +27,27 @@ class DevelopmentConfig(Config):
 
     SQLALCHEMY_TRACK_MODIFICATIONS  = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///ws.sqlite'
+```
 
-Edit SQLALCHEMY_DATABASE_URI with the appropriate value.
+Edit `SQLALCHEMY_DATABASE_URI` with the appropriate value.
 
-To switch between Development/Production edit __init__.py:
+To switch between Development/Production edit `__init__.py`:
 
-'app.config.from_object('config.DevelopmentConfig')'
+```
+app.config.from_object('config.DevelopmentConfig')
+```
 
 change to:
 
-'app.config.from_object('config.ProductionConfig')'
+```
+app.config.from_object('config.ProductionConfig')
+```
 
 
-to run:
+### RUN
 
-'export WS_SETTINGS=PATH/TO/config.py
+```
+export WS_SETTINGS=PATH/TO/config.py
 export FLASK_APP=run.py
-flask run'
+flask run
+```
