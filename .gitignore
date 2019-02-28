@@ -20,6 +20,7 @@ parts/
 sdist/
 var/
 wheels/
+pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
@@ -114,9 +115,20 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+#Private Data
+/data
+wl_scrape_*.sh
+run_*.sh
+*.sqlite
+
+#Visual Studio Code
+.vs/ProjectSettings.json
+.vs/VSWorkspaceState.json
+.vs/wl_scrape/v15/.suo
+settings.json
+
 #MAC
 .DS_Store
-.vscode/settings.json
 
 #config file
 run.sh
