@@ -129,6 +129,3 @@ settings.json
 
 #MAC
 .DS_Store
-
-#config file
-run.sh

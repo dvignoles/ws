@@ -1,5 +1,4 @@
-from app.models import Observation
-
+from app import Observation
 
 def get_current(session):
     """Return Dictionary of values from most recent observation"""

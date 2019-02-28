@@ -15,5 +15,5 @@ token = os.environ['WS_TOKEN']
 
 XML_URL = 'https://api.weatherlink.com/v1/NoaaExt.xml?user='+ username +'&pass=' + password +'&apiToken=' + token
 
-conn = db_init(os.environ['WS_DB_URI'])
-db_record(XML_URL,conn)
+Session = db_init(os.environ['WS_DB_URI'])
+db_record(XML_URL,Session)
