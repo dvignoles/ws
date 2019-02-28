@@ -1,13 +1,11 @@
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData,Table
 from sqlalchemy.ext.automap import automap_base
 from app import db
 
-engine = db.engine
-metadata = MetaData()
-metadata.reflect(engine,only=['observation'])
+db.Model.metadata.reflect(db.engine)
 
-Base = automap_base(metadata=metadata)
+class Observation(db.Model):
+    __table__ = db.Model.metadata.tables['observation']
 
-Base.prepare()
-
-Observation = Base.classes.observation
+    def __repr__(self):
+        pass

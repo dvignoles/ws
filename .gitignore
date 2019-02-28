@@ -119,4 +119,4 @@ dmypy.json
 .vscode/settings.json
 
 #config file
-config.py
+run.sh

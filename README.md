@@ -1,36 +1,21 @@
 # ASRC Weather Station Website
 
-### SET UP
+### Getting Started
+
+To start the application run:
 
 ```
-cd path/to/ws
-touch config.py
+export FLASK_APP=run.py
+export DEV_URI=sqlite:////home/ws.sqlite
+export PROD_URI=mysql://user@localhost/foo
+flask run
 ```
 
-populate `config.py` with: 
+replace `DEV_URI` & `PROD_URI` with appropriate SQLAlchemy connection strings
 
-```
-#config.py
+---
 
-class Config(object):
-    DEBUG = False
-    TESTING = False
-    DATABASE_URI = 'sqlite:///:memory:'
-
-class ProductionConfig(Config):
-    SQLALCHEMY_TRACK_MODIFICATIONS  = False
-    DATABASE_URI = 'mysql://user@localhost/foo'
-
-class DevelopmentConfig(Config):
-    DEBUG = True
-    TEMPLATES_AUTO_RELOAD = True
-
-    SQLALCHEMY_TRACK_MODIFICATIONS  = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///ws.sqlite'
-```
-
-Edit `SQLALCHEMY_DATABASE_URI` with the appropriate value.
-
+### Production / Development
 To switch between Development/Production edit `__init__.py`:
 
 ```
@@ -41,13 +26,4 @@ change to:
 
 ```
 app.config.from_object('config.ProductionConfig')
-```
-
-
-### RUN
-
-```
-export WS_SETTINGS=PATH/TO/config.py
-export FLASK_APP=run.py
-flask run
 ```

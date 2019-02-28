@@ -11,6 +11,7 @@ app.config.from_object('config.DevelopmentConfig')
 
 #Database
 db = SQLAlchemy(app)
+db.reflect(app=app)
 
 # Load the views
 from app import views
