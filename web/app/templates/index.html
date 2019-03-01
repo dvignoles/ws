@@ -1,20 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block body %}
+
 <!DOCTYPE html>
 <html>
 <head>
 	<title>CUNY ASRC Weather Station</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-	<div class="container">
-		<div class="box-1">
-			<h2>CUNY ASRC Weather Station</h2>
+	<div class="Jumbotron">
+		<div >
+			<h1>CUNY ASRC Weather Station</h1>
 			<p>City University of New York <br/>Advanced Science Research Center</p>
 		</div>
 
 		<div class="box-2"> <!-- If I'm not mistaking, class is naming the work space-->
 			<h2>Current Weather</h2>
 			<iframe src='https://www.weatherlink.com/embeddablePage/show/9a75d7cbe1bb4ca48e592b6931ff62bb/wide' width='560' height='480' frameborder='0'></iframe>
-			<a class="button" href="https://www.weatherlink.com">Read More</a>
+			<a class="button" href="https://www.weatherlink.com">Weather</a>
 		</div>
 
 		<div class="categories">
@@ -72,11 +76,11 @@
 			</p>
 		</div>
 
-		<div id="sidebar">
+		<!-- <div id="sidebar">
 			<p> SIDE BAR
 			</p>
 		</div>
-
+ -->
 		<div class="clr"></div>
 
 		<div class="p-box">
@@ -84,7 +88,7 @@
 			<h2>Goodbye</h2>
 		</div>
 
-		<ul class="my-list">
+		<!-- <ul class="my-list">
 			<li>List Item</li>
 			<li>List Item</li>
 			<li>List Item</li>
@@ -97,11 +101,14 @@
 			<li>List Item</li>
 			<li>List Item</li>
 			<li>List Item</li>
-		</ul>
+		</ul> -->
 	</div><!-- ./container -->
 
-	<a class="fix-me button" href="">Hello</a>
+	<a class="fix-me button" href="">Side Bar<br> Data</a>
 
 	<div style="margin-top:500px;"></div>
 </body>
 </html>
+
+{% endblock %}
+ 

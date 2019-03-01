@@ -6,17 +6,16 @@
     <title>{% block title %}{% endblock %}</title>
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <!-- Custom styles for this template HERE-->
   </head>
   <body>
     <div class="container">
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-left">
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/instruments">Instruments</a></li>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('instruments') }}">Instruments</a></li>
           </ul>
           <br><hr>
         </nav>

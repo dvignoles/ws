@@ -5,6 +5,8 @@ class Config(object):
     DEBUG = False
     TESTING = False
     DATABASE_URI = 'sqlite:///:memory:'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+
 
 class ProductionConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS  = False

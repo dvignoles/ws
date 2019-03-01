@@ -8,7 +8,7 @@ from app.queries import get_alltime,get_record
 
 @app.route('/')
 def index():
-    return render_template("HomePage.html")
+    return render_template("index.html")
 
 @app.route('/about')
 def about():
@@ -16,7 +16,7 @@ def about():
 
 @app.route('/instruments')
 def instruments():
-	return render_template("Instruments.html")
+	return render_template("instruments.html")
 
 @app.route('/test')
 def test():
