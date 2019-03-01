@@ -4,9 +4,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os,sys
 
-#Observation Class from wl_scrape one directory up
+#Models from wl_scrape one directory up
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'wl_scrape'))
-from wl_sqlalch import Observation
+from ws_models import Observation
 
 # Initialize the app
 app = Flask(__name__, instance_relative_config=True)

@@ -2,11 +2,10 @@
     run.py
     Author: Daniel Vignoles
 
-    Purpose: Scrape the contents of an api.weather.com xml page to data directory
+    Purpose: Scrape the contents of an api.weather.com xml page to database
 """
 
-from WeatherLinkScrape import write_xml
-from wl_sqlalch import db_init,db_record
+from WeatherLinkScrape import db_init,db_record
 import os
 
 username = os.environ['WS_USER_ID']

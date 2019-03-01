@@ -9,9 +9,15 @@ from requests.exceptions import RequestException
 from contextlib import closing
 from xml.etree import ElementTree as ET
 from datetime import datetime
-from os import getcwd,chdir,makedirs
 from bs4 import BeautifulSoup
-import smtplib, ssl
+from datetime import datetime as dt
+from time import sleep
+import smtplib, ssl, os
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import IntegrityError
+from ws_models import Base,Observation
 
 
 ###---CONFIG---###
@@ -29,6 +35,57 @@ CURRENT = [
     'sunrise','sunset','temp_c','temp_f','uv_index','wind_degrees','wind_dir','wind_kt','wind_mph',
     'windchill_c','windchill_f'
 ]
+
+def db_record(url,Session):
+    """
+        Record from xml url to database connection on ten minute interval
+    """
+    error_count = 0
+    while True:
+        session = Session()
+        observation = Observation(**get_soup(url))
+        try:
+            session.add(observation)
+            session.commit()
+            print('Observation successfully recorded to database at: ',str(dt.now()))
+            error_count = 0
+        except IntegrityError:
+            print('No new Observation Found at: ',str(dt.now()))
+            error_count += 1
+        except:
+            print('Error in recording to database')
+        finally:
+            session.close()
+            if error_count == 0:
+                sleep(600) #10 min
+            elif error_count < 11:
+                sleep(60) #1 min * 10
+            elif error_count < 16:
+                sleep(600) #10 min * 5
+            else:
+                print('Alert Triggered') 
+                email_alert()#TODO: Implement, put alert email on timer (6-12 hours?) without delaying 10 minute checks
+                sleep(3600 * 6) #1 hour * 6
+
+
+def db_init(DB_URI):
+    """
+        Connect to database and return Session object
+    """
+    engine = create_engine(DB_URI)
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    return(Session)
+
+def email_alert():
+    pass
+    message = """\
+    Subject: Alert
+
+    Weather Station is stalled. 
+    """
+    #send_email(alert['sender'],alert['sender_pass'],alert['receiver'],message)
+
 
 def send_email(sender,password,receiver,message):
     """
@@ -82,7 +139,7 @@ def write_xml(url):
         url: api.weatherlink.com xml webpage
         write_xml writes a .xml to data folder in the appropriate year/month/day/ path
     """
-    root_dir = getcwd()
+    root_dir = os.getcwd()
 
     tree = get_tree(url)
     date_time = get_obs_time(parse_obs_time(tree))
@@ -92,10 +149,10 @@ def write_xml(url):
 
     path = 'data'+'/'+year+'/'+month+'/'+day
 
-    makedirs(path,exist_ok=True)
-    chdir(path)
+    os.makedirs(path,exist_ok=True)
+    os.chdir(path)
     tree.write(get_obs_time_str(date_time)+'.xml')
-    chdir(root_dir)
+    os.chdir(root_dir)
 
 def get_obs_time_str(date_time):
     """
@@ -107,6 +164,9 @@ def get_obs_time(observation_unparsed):
     return(datetime.strptime(observation_unparsed,DATE_FORMAT))
 
 def parse_obs_time(tree):
+    """
+        Return string representing the time of observation from ElementTree
+    """
     return tree.getroot().find(OBSERVATION).text
 
 def get_tree(url):
