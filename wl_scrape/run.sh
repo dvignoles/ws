@@ -9,6 +9,6 @@ export WS_DB_URI=#Database URI for SQLAlchemy
 
 export ALERT_SENDER=#Email here
 export ALERT_PASS=#Email pass here
-export ALERT_RECEIVER=#Email here
+export ALERT_RECEIVERS=#Emails here separated by commas ex: a@example.com,b@example.com,c@example.com
 
 python run.py

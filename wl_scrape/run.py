@@ -16,4 +16,8 @@ XML_URL = 'https://api.weatherlink.com/v1/NoaaExt.xml?user=' + \
     username + '&pass=' + password + '&apiToken=' + token
 
 Session = db_init(os.environ['WS_DB_URI'])
-db_record(XML_URL, Session)
+
+alert_receivers = list(os.environ['ALERT_RECEIVERS'].split(','))
+alerts = {'sender':os.environ['ALERT_SENDER'],'pass':os.environ['ALERT_PASS'],'receivers':alert_receivers}
+
+db_record(XML_URL, Session,alerts)

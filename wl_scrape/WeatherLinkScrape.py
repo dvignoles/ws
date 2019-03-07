@@ -11,6 +11,7 @@ from xml.etree import ElementTree as ET
 from datetime import datetime
 from bs4 import BeautifulSoup
 from datetime import datetime as dt
+from datetime import timedelta
 from time import sleep
 import smtplib
 import ssl
@@ -39,19 +40,30 @@ CURRENT = [
 ]
 
 
-def db_record(url, Session):
+def db_record(url, Session, alert):
     """
         Record from xml url to database connection on ten minute interval
     """
+
+    #flags
     error_count = 0
+    alert_sent = False
+    alert_time = None
+
     while True:
         session = Session()
         observation = Observation(**get_soup(url))
+
         try:
             session.add(observation)
             session.commit()
             print('Observation successfully recorded to database at: ', str(dt.now()))
+
+            #reset flags
             error_count = 0
+            alert_sent = False
+            alert_time = None
+
         except IntegrityError:
             print('No new Observation Found at: ', str(dt.now()))
             error_count += 1
@@ -66,10 +78,24 @@ def db_record(url, Session):
             elif error_count < 16:
                 sleep(600)  # 10 min * 5
             else:
-                print('Alert Triggered')
-                email_alert()  # TODO: Implement, put alert email on timer (6-12 hours?) without delaying 10 minute checks
-                sleep(3600 * 6)  # 1 hour * 6
+                print('Weather Station Data collection offline')
 
+                #first run
+                if alert_time is not None:
+
+                    # > 12 hours since last alert
+                    if (dt.now() - alert_time) >= timedelta(hours=12):
+                        alert_sent = False
+
+                #trigger alert, save time
+                if not alert_sent:
+                    email_alert(alert)
+                    alert_sent = True
+                    alert_time = dt.now()
+
+                
+                sleep(600)
+                
 
 def db_init(DB_URI):
     """
@@ -81,17 +107,17 @@ def db_init(DB_URI):
     return(Session)
 
 
-def email_alert():
+def email_alert(alert):
     pass
     message = """\
-    Subject: Alert
+    Subject: Weather Station Alert
 
-    Weather Station is stalled. 
+    Weather Station is stalled. This alert will trigger every 12 hours until data collection can resume. 
     """
-    # send_email(alert['sender'],alert['sender_pass'],alert['receiver'],message)
+    send_email(alert['sender'],alert['pass'],alert['receivers'],message)
 
 
-def send_email(sender, password, receiver, message):
+def send_email(sender, password, receivers, message):
     """
         Send an email through gmail. Intended to alert admin when weather station stalls. 
     """
@@ -100,7 +126,9 @@ def send_email(sender, password, receiver, message):
 
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
         server.login(sender, password)
-        server.sendmail(sender, receiver, message)
+
+        for receivee in receivers:
+            server.sendmail(sender, receivee, message)
 
 
 def get_soup(url):
