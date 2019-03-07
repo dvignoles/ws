@@ -4,7 +4,7 @@
     {% for key, value in all_time.items()%}
         <h4>{{key}}</h4>
         <p>High: {{value.high.val}} {{value.units}} on {{value.high.date}} at {{value.high.time}}</p>
-        <p>Low: {{value.low.val}} on {{value.low.date}} at {{value.low.time}} </p>
+        <p>Low: {{value.low.val}} {{value.units}} on {{value.low.date}} at {{value.low.time}} </p>
     {% endfor %}
 
     <h1>Last Observation</h1>

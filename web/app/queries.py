@@ -2,6 +2,7 @@ from app import Observation
 from sqlalchemy import desc
 from collections import OrderedDict
 
+#TODO: Switch from passing in session to Query Objects
 
 def get_current(session):
     """Return Dictionary of values from most recent observation"""
@@ -27,6 +28,7 @@ def get_alltime(session, keys):
 
 
 def get_record(session, datetime):
+    #TODO: Query by partial date/time
     row = session.query(Observation).filter_by(datetime=datetime).first()
     return(dict_from_row(row))
 
