@@ -127,8 +127,7 @@ def send_email(sender, password, receivers, message):
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
         server.login(sender, password)
 
-        for receivee in receivers:
-            server.sendmail(sender, receivee, message)
+        server.sendmail(sender, receivers, message)
 
 
 def get_soup(url):
