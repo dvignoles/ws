@@ -15,9 +15,10 @@ from datetime import timedelta
 from time import sleep
 import smtplib
 import ssl
+from email.message import EmailMessage
 import os
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine,desc
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
 from ws_models import Base, Observation
@@ -34,9 +35,10 @@ OBSERVATION_STR = '%Y-%m-%d_%H-%M'
 
 CURRENT = [
     'observation_time_rfc822', 'station_name', 'dewpoint_c', 'dewpoint_f', 'heat_index_c', 'heat_index_f',
-    'location', 'latitude', 'longitude', 'pressure_in', 'pressure_mb', 'relative_humidity', 'solar_radiation',
-    'sunrise', 'sunset', 'temp_c', 'temp_f', 'uv_index', 'wind_degrees', 'wind_dir', 'wind_kt', 'wind_mph',
-    'windchill_c', 'windchill_f'
+    'location', 'latitude', 'longitude', 'pressure_in', 'pressure_mb','rain_day_in','rain_rate_day_high_in_per_hr',
+    'rain_rate_hour_high_in_per_hr','rain_rate_in_per_hr','rain_storm_in',
+    'relative_humidity', 'solar_radiation','sunrise', 'sunset', 'temp_c', 'temp_f', 'uv_index', 'wind_degrees', 
+    'wind_dir', 'wind_kt', 'wind_mph', 'windchill_c', 'windchill_f'
 ]
 
 
@@ -53,11 +55,16 @@ def db_record(url, Session, alert):
     while True:
         session = Session()
         observation = Observation(**get_soup(url))
+        
+        time_of_scrape = dt.now().strftime(DATE_FORMAT)
+        scraped_time = observation.datetime.strftime(DATE_FORMAT)
+        last_time_in_db = session.query(Observation).order_by(desc(Observation.datetime)).first().datetime.strftime(DATE_FORMAT)
 
         try:
+            
             session.add(observation)
             session.commit()
-            print('Observation successfully recorded to database at: ', str(dt.now()))
+            print('Observation successfully recorded to database at: ', str(dt.now().strftime(DATE_FORMAT)))
 
             #reset flags
             error_count = 0
@@ -65,7 +72,9 @@ def db_record(url, Session, alert):
             alert_time = None
 
         except IntegrityError:
-            print('No new Observation Found at: ', str(dt.now()))
+            print('\nNo new observation found for attempt at: ', time_of_scrape)
+            print('Observation time scraped from weatherlink: ', scraped_time)
+            print('Last observation time recorded to database: ', last_time_in_db)
             error_count += 1
         except:
             print('Error in recording to database')
@@ -73,10 +82,9 @@ def db_record(url, Session, alert):
             session.close()
             if error_count == 0:
                 sleep(600)  # 10 min
-            elif error_count < 11:
-                sleep(60)  # 1 min * 10
-            elif error_count < 16:
-                sleep(600)  # 10 min * 5
+            elif error_count < 7: #wait an hour before triggering alert
+                print("Attemping again in 10 minutes...(",error_count,"/6)")
+                sleep(600) 
             else:
                 print('Weather Station Data collection offline')
 
@@ -89,7 +97,12 @@ def db_record(url, Session, alert):
 
                 #trigger alert, save time
                 if not alert_sent:
+                    alert['time_of_scrape'] = time_of_scrape
+                    alert['scraped_time'] = scraped_time
+                    alert['last_time_in_db'] = last_time_in_db
+
                     email_alert(alert)
+                    print("Email Alert sent to: ", alert['receivers'])
                     alert_sent = True
                     alert_time = dt.now()
 
@@ -108,26 +121,35 @@ def db_init(DB_URI):
 
 
 def email_alert(alert):
-    pass
-    message = """\
-    Subject: Weather Station Alert
+    content = "The Weatherlink API is currently providing an outdated observation. " + \
+    "This may indicate that weather station data collection is stalled." + \
+    "\n\nTime of last attempt to scrape data: " + alert['time_of_scrape'] + \
+    "\n\nObservation time scraped from last attempt: " + alert['scraped_time'] + \
+    "\n\nLast observation time successfully recorded to database: " + alert['last_time_in_db'] + \
+    "\n\nThis alert will trigger every 12 hours until data collection can resume."
 
-    Weather Station is stalled. This alert will trigger every 12 hours until data collection can resume. 
-    """
-    send_email(alert['sender'],alert['pass'],alert['receivers'],message)
+    send_email(alert['sender'],alert['pass'],alert['receivers'],'Weather Station Alert',content)
 
 
-def send_email(sender, password, receivers, message):
+def send_email(sender, password, receivers, subject, content):
     """
         Send an email through gmail. Intended to alert admin when weather station stalls. 
     """
+
+    msg = EmailMessage()
+    msg['Subject'] = subject
+    msg['From'] = sender
+    msg['To'] = receivers
+    msg.set_content(content)
+
     port = 465
     context = ssl.create_default_context()
 
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
         server.login(sender, password)
 
-        server.sendmail(sender, receivers, message)
+        #server.sendmail(sender, receivers, message)
+        server.send_message(msg)
 
 
 def get_soup(url):

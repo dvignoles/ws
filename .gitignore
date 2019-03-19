@@ -129,3 +129,7 @@ settings.json
 
 #MAC
 .DS_Store
+
+#Alembic
+alembic.ini
+alembic

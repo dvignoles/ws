@@ -28,6 +28,18 @@ class Observation(Base):
                          'units': 'inch of Mercury', 'units_abbrev': 'inHg'})
     pressure_mb = Column('pressure_mb', Float(), unique=False, info={
                          'units': 'millibar', 'units_abbrev': 'mb'})
+
+    rain_day_in = Column('rain_day_in', Float(), unique=False, info={
+                         'units': 'inches', 'units_abbrev': 'in'})
+    rain_rate_day_high_in_per_hr = Column('rain_rate_day_high_in_per_hr', Float(), unique=False, info={
+                         'units': 'inches per hour', 'units_abbrev': 'in/hr'})
+    rain_rate_hour_high_in_per_hr = Column('rain_rate_hour_high_in_per_hr', Float(), unique=False, info={
+                         'units': 'inches per hour', 'units_abbrev': 'in/hr'})
+    rain_rate_in_per_hr = Column('rain_rate_in_per_hr', Float(), unique=False, info={
+                         'units': 'inches per hour', 'units_abbrev': 'in/hr'})
+    rain_storm_in = Column('rain_storm_in', Float(), unique=False, info={
+                         'units': 'inches', 'units_abbrev': 'in'})
+
     relative_humidity = Column('relative_humidity', Integer(), unique=False, info={
                                'units': 'percent', 'units_abbrev': '%'})
     solar_radiation = Column('solar_radiation', Integer(), unique=False, info={
