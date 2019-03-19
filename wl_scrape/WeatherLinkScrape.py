@@ -58,7 +58,10 @@ def db_record(url, Session, alert):
         
         time_of_scrape = dt.now().strftime(DATE_FORMAT)
         scraped_time = observation.datetime.strftime(DATE_FORMAT)
-        last_time_in_db = session.query(Observation).order_by(desc(Observation.datetime)).first().datetime.strftime(DATE_FORMAT)
+        last_obs_in_db = session.query(Observation).order_by(desc(Observation.datetime)).first()
+
+        if(last_obs_in_db != None): #empty database case
+            last_time_in_db  = last_obs_in_db.datetime.strftime(DATE_FORMAT)
 
         try:
             
