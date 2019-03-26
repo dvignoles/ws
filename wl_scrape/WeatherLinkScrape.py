@@ -1,39 +1,34 @@
 """
     WeatherLinkScrape.py
     Author: Daniel Vignoles
-    WeatherLinkScrape is a tool to scrape .xml data from api.weatherlink.com xml pages
+    Purpose: Scrape XML data using the weatherlink API and organize into files or a database
 """
 
-from requests import get
-from requests.exceptions import RequestException
-from contextlib import closing
-from xml.etree import ElementTree as ET
-from datetime import datetime
-from bs4 import BeautifulSoup
 from datetime import datetime as dt
 from datetime import timedelta
 from time import sleep
-import smtplib
-import ssl
-from email.message import EmailMessage
 import os
 
-from sqlalchemy import create_engine,desc
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
-from ws_models import Base, Observation
+
+from utilities import get_tree, parse_xml_tag,get_datetime,get_datetime_str,get_soup,send_email
+from ws_models import Observation
 
 
-###---CONFIG---###
+###---CONFIG---#########################################
+
 # ElementTree.Element name of Observation Time attribute
-OBSERVATION = 'observation_time_rfc822'
-# Format of parsed date to for strptime
-DATE_FORMAT = '%a, %d %b %Y %H:%M:%S %z'
-# Format for strftime to name files
-OBSERVATION_STR = '%Y-%m-%d_%H-%M'
-###------------###
+DATETIME_TAG = 'observation_time_rfc822'
 
-CURRENT = [
+# Format of parsed DATETIME_TAG to for strptime
+DATETIME_FORMAT = '%a, %d %b %Y %H:%M:%S %z'
+
+# Format for strftime to name files
+DATETIME_PARSED_FORMAT = '%Y-%m-%d_%H-%M'
+
+
+KEEP_TAGS = [
     'observation_time_rfc822', 'station_name', 'dewpoint_c', 'dewpoint_f', 'heat_index_c', 'heat_index_f',
     'location', 'latitude', 'longitude', 'pressure_in', 'pressure_mb','rain_day_in','rain_rate_day_high_in_per_hr',
     'rain_rate_hour_high_in_per_hr','rain_rate_in_per_hr','rain_storm_in',
@@ -41,10 +36,22 @@ CURRENT = [
     'wind_dir', 'wind_kt', 'wind_mph', 'windchill_c', 'windchill_f'
 ]
 
+###------------#########################################
+
 
 def db_record(url, Session, alert):
     """
-        Record from xml url to database connection on ten minute interval
+        Record from xml url to database connection on ten minute interval. 
+            Email alerts automatically sent out if data not updating within 1 hour
+
+        Inputs:
+            url: xml url from weatherlink api
+            Session: return of session_maker
+                see ws_sqalch.db_init
+            alert: dictionary containing 'sender', 'pass', and 'receivers'
+                sender: gmail to send alerts from
+                pass: password of sender gmail
+                receivers: list of emails to alert
     """
 
     #flags
@@ -54,76 +61,85 @@ def db_record(url, Session, alert):
 
     while True:
         session = Session()
-        observation = Observation(**get_soup(url))
+        observation = Observation(**wl_soup(url))
         
-        time_of_scrape = dt.now().strftime(DATE_FORMAT)
-        scraped_time = observation.datetime.strftime(DATE_FORMAT)
+        time_of_scrape = dt.now().strftime(DATETIME_FORMAT)
+        scraped_time = observation.datetime.strftime(DATETIME_FORMAT)
         last_obs_in_db = session.query(Observation).order_by(desc(Observation.datetime)).first()
 
         if(last_obs_in_db != None): #empty database case
-            last_time_in_db  = last_obs_in_db.datetime.strftime(DATE_FORMAT)
+            last_time_in_db  = last_obs_in_db.datetime.strftime(DATETIME_FORMAT)
 
-        try:
-            
+        #Attempt to commit scraped data url to db
+        try: 
             session.add(observation)
             session.commit()
-            print('Observation successfully recorded to database at: ', str(dt.now().strftime(DATE_FORMAT)))
+            print('Observation successfully recorded to database at: ', str(dt.now().strftime(DATETIME_FORMAT)))
 
             #reset flags
             error_count = 0
             alert_sent = False
             alert_time = None
 
-        except IntegrityError:
+        #Handle attempt to commit duplicate data
+        except IntegrityError: 
             print('\nNo new observation found for attempt at: ', time_of_scrape)
             print('Observation time scraped from weatherlink: ', scraped_time)
             print('Last observation time recorded to database: ', last_time_in_db)
             error_count += 1
-        except:
+
+        #else error
+        except: 
             print('Error in recording to database')
+
         finally:
+            #Cleanup
             session.close()
-            if error_count == 0:
-                sleep(600)  # 10 min
-            elif error_count < 7: #wait an hour before triggering alert
-                print("Attemping again in 10 minutes...(",error_count,"/6)")
-                sleep(600) 
-            else:
-                print('Weather Station Data collection offline')
+            alert_time,alert_sent = error_decision(error_count,alert,alert_time,alert_sent,time_of_scrape,scraped_time,last_time_in_db)
+            sleep(600) # 10 minutes
 
-                #first run
-                if alert_time is not None:
 
-                    # > 12 hours since last alert
-                    if (dt.now() - alert_time) >= timedelta(hours=12):
-                        alert_sent = False
+def error_decision(error_count,alert,alert_time,alert_sent,time_of_scrape,scraped_time,last_time_in_db):
+    '''Decision making based on error_count for log / sending of email alerts'''
 
-                #trigger alert, save time
-                if not alert_sent:
-                    alert['time_of_scrape'] = time_of_scrape
-                    alert['scraped_time'] = scraped_time
-                    alert['last_time_in_db'] = last_time_in_db
+    if error_count == 0:
+        pass
 
-                    email_alert(alert)
-                    print("Email Alert sent to: ", alert['receivers'])
-                    alert_sent = True
-                    alert_time = dt.now()
+    #wait an hour before triggering alert
+    elif error_count < 7: 
+        print("Attemping again in 10 minutes...(",error_count,"/6)")
 
-                
-                sleep(600)
-                
+    #Alert cycle
+    else:
+        print('Weather Station Data collection offline')
 
-def db_init(DB_URI):
-    """
-        Connect to database and return Session object
-    """
-    engine = create_engine(DB_URI)
-    Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine)
-    return(Session)
+        #first run
+        if alert_time is not None:
+
+            # > 12 hours since last alert
+            if (dt.now() - alert_time) >= timedelta(hours=12):
+                alert_sent = False
+
+        #trigger alert, save time
+        if not alert_sent:
+            alert['time_of_scrape'] = time_of_scrape
+            alert['scraped_time'] = scraped_time
+            alert['last_time_in_db'] = last_time_in_db
+
+            email_alert(alert)
+            print("Email Alert sent to: ", alert['receivers'])
+            alert_sent = True
+            alert_time = dt.now()
+
+    return((alert_time,alert_sent))
 
 
 def email_alert(alert):
+    '''
+        Send an email concerning the weatherlink API not providing an up to date
+    '''
+
+
     content = "The Weatherlink API is currently providing an outdated observation. " + \
     "This may indicate that weather station data collection is stalled." + \
     "\n\nTime of last attempt to scrape data: " + alert['time_of_scrape'] + \
@@ -133,35 +149,12 @@ def email_alert(alert):
 
     send_email(alert['sender'],alert['pass'],alert['receivers'],'Weather Station Alert',content)
 
-
-def send_email(sender, password, receivers, subject, content):
+def wl_soup(url):
     """
-        Send an email through gmail. Intended to alert admin when weather station stalls. 
-    """
-
-    msg = EmailMessage()
-    msg['Subject'] = subject
-    msg['From'] = sender
-    msg['To'] = receivers
-    msg.set_content(content)
-
-    port = 465
-    context = ssl.create_default_context()
-
-    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-        server.login(sender, password)
-
-        #server.sendmail(sender, receivers, message)
-        server.send_message(msg)
-
-
-def get_soup(url):
-    """
-        Return a dictionary of the scraped CURRENT variables from url
+        Return a dictionary of the scraped KEEP_TAGS variables from url
     """
 
-    soup = BeautifulSoup(simple_get(url), 'xml')
-    observations = list(map(lambda tag: soup.find(tag), CURRENT))
+    observations = get_soup(url,KEEP_TAGS)
 
     results = {}
     for obs in observations:
@@ -169,8 +162,8 @@ def get_soup(url):
         content = obs.contents[0]
 
         # reformat date
-        if(tag == 'observation_time_rfc822'):
-            dt = get_obs_time(content)
+        if(tag == DATETIME_TAG):
+            dt = get_datetime(content,DATETIME_FORMAT)
 
             results['datetime'] = dt
 
@@ -200,7 +193,7 @@ def write_xml(url):
     root_dir = os.getcwd()
 
     tree = get_tree(url)
-    date_time = get_obs_time(parse_obs_time(tree))
+    date_time = get_datetime(parse_xml_tag(tree,DATETIME_TAG),DATETIME_FORMAT)
     year = str(date_time.year)
     month = str(date_time.month)
     day = str(date_time.day)
@@ -209,80 +202,5 @@ def write_xml(url):
 
     os.makedirs(path, exist_ok=True)
     os.chdir(path)
-    tree.write(get_obs_time_str(date_time)+'.xml')
+    tree.write(get_datetime_str(date_time,DATETIME_PARSED_FORMAT)+'.xml')
     os.chdir(root_dir)
-
-
-def get_obs_time_str(date_time):
-    """
-        Return str reprensentation in OBSERVATION_STR format of date_time
-    """
-    return(datetime.strftime(date_time, OBSERVATION_STR))
-
-
-def get_obs_time(observation_unparsed):
-    return(datetime.strptime(observation_unparsed, DATE_FORMAT))
-
-
-def parse_obs_time(tree):
-    """
-        Return string representing the time of observation from ElementTree
-    """
-    return tree.getroot().find(OBSERVATION).text
-
-
-def get_tree(url):
-    """
-        Return an ElementTree representing the XML
-    """
-    xml_raw = simple_get(url)
-    root = ET.fromstring(xml_raw)
-    tree = ET.ElementTree(root)
-    return(tree)
-
-
-def simple_get(url):
-    """
-    Attempts to get the content at `url` by making an HTTP GET request.
-    If the content-type of response is some kind of JSON/XML, return the
-    text content, otherwise return None.
-    """
-    try:
-        with closing(get(url, stream=True)) as resp:
-            if is_good_response(resp):
-                if(is_xml(resp)):
-                    return resp.content
-                elif(is_json(resp)):
-                    return resp.json()
-            else:
-                return None
-
-    except RequestException as e:
-        log_error('Error during requests to {0} : {1}'.format(url, str(e)))
-        return None
-
-
-def is_good_response(resp):
-    """
-    Returns True if the response seems to be xml, False otherwise.
-    """
-    content_type = resp.headers['Content-Type'].lower()
-    return (resp.status_code == 200
-            and content_type is not None
-            and (is_xml(resp) or is_json(resp)))
-
-
-def is_xml(resp):
-    return resp.headers['Content-Type'].lower().find('xml') > -1
-
-
-def is_json(resp):
-    return resp.headers['Content-Type'].lower().find('json') > -1
-
-
-def log_error(e):
-    """
-    Print Error
-    """
-    print(e)
-    # TODO: Log Errors
