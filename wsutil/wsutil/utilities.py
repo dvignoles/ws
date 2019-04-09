@@ -46,8 +46,8 @@ def send_email(sender, password, receivers, subject, content):
 #BS4
 from bs4 import BeautifulSoup
 
-def get_soup(url,tag_names):
-    soup = BeautifulSoup(simple_get(url), 'xml')
+def get_soup(url,tag_names,content_type='xml'):
+    soup = BeautifulSoup(simple_get(url), content_type)
     tag_objects = list(map(lambda tag: soup.find(tag), tag_names))
     return(tag_objects)
 
