@@ -75,14 +75,14 @@ from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
 
-def simple_get(url):
+def simple_get(url,headers=None):
     """
     Attempts to get the content at `url` by making an HTTP GET request.
     If the content-type of response is some kind of JSON/XML, return the
     text content, otherwise return None.
     """
     try:
-        with closing(get(url, stream=True)) as resp:
+        with closing(get(url, stream=True,headers=headers)) as resp:
             if is_good_response(resp):
                 if(is_xml(resp)):
                     return resp.content

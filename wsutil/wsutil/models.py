@@ -4,7 +4,7 @@ from sqlalchemy import Column, String, Integer, Float, DateTime, Date, Time
 
 Base = declarative_base()
 
-
+#WeatherLink
 class Observation(Base):
     __tablename__ = 'observation'
 

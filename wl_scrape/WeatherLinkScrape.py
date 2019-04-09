@@ -12,8 +12,8 @@ import os
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 
-from utilities import get_tree, parse_xml_tag,get_datetime,get_datetime_str,get_soup,send_email
-from ws_models import Observation
+from wsutil.utilities import get_tree, parse_xml_tag,get_datetime,get_datetime_str,get_soup,send_email
+from wsutil.models import Observation
 
 
 ###---CONFIG---#########################################

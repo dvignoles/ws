@@ -1,4 +1,4 @@
-from app import Observation
+from wsutil.models import Observation
 from sqlalchemy import desc
 from collections import OrderedDict
 

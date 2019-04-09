@@ -5,7 +5,7 @@
     Purpose: Scrape the contents of an api.weather.com xml page to database
 """
 
-from ws_sqlalch import db_init
+from wsutil.sqlalch import db_init
 from WeatherLinkScrape import db_record
 import os
 

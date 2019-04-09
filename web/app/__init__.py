@@ -4,9 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 import sys
 
-# Models from wl_scrape one directory up
-sys.path.append(os.path.join(os.path.dirname(sys.path[0]), 'wl_scrape'))
-from ws_models import Observation
+from wsutil.models import Observation
 
 # Initialize the app
 app = Flask(__name__, instance_relative_config=True)
