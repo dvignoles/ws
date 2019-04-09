@@ -16,14 +16,16 @@ class Asos:
         self.network = network
         self.url = 'https://mesonet.agron.iastate.edu/geojson/network_obs.php?network='+ network
     
-    def request(self):
+    def __request(self):
         return(simple_get(self.url))
 
     def get_update(self):
-        json = self.request()
-        stations = []
+        json = self.__request()
+        stations = {}
         for feature in json['features']:
+            station_id = feature['id']
             properties = feature['properties']
             properties['coordinates'] = feature['geometry']['coordinates']
-            stations.append(properties)
-            return(stations)
+            stations[station_id] = properties
+        
+        return(stations)
