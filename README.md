@@ -1,6 +1,17 @@
+
 # ASRC Weather Station Data Collection and Website
 
-This project contains two modules intended to be used with one another. 
+## Requirements / Dependencies
+```
+#install wsutil package
+cd wsutil
+pip install . 
+
+#other dependencies
+cd ..
+pip install -r requirements.txt
+
+```
 
 ## wl_scrape Module
 
