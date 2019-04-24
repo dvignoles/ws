@@ -133,3 +133,6 @@ settings.json
 #Alembic
 alembic.ini
 alembic
+
+#misc testing
+wl_scrape/asos_test.py

@@ -1,5 +1,7 @@
 from .utilities import simple_get
+from .models import Asos_Observation
 
+from datetime import datetime
 class Noaav2:
     #TODO:make this funcitonal
     HEADER = {'token':'TOKEN HERE'}
@@ -12,20 +14,35 @@ class Noaav2:
 
 class Asos:
 
-    def __init__(self,network):
+    def __init__(self,network,stations):
         self.network = network
         self.url = 'https://mesonet.agron.iastate.edu/geojson/network_obs.php?network='+ network
+        self.stations = stations
     
     def __request(self):
         return(simple_get(self.url))
 
     def get_update(self):
         json = self.__request()
-        stations = {}
+        update = {}
         for feature in json['features']:
             station_id = feature['id']
+            if station_id not in self.stations:
+                continue
             properties = feature['properties']
-            properties['coordinates'] = feature['geometry']['coordinates']
-            stations[station_id] = properties
+
+            #datetime conversion
+            properties['local_date'] = datetime.strptime(properties['local_date'],'%Y-%m-%d').date()
+            properties['utc_valid'] = datetime.strptime(properties['utc_valid'],'%Y-%m-%dT%H:%M:%SZ')
+            properties['local_valid'] = datetime.strptime(properties['local_valid'],'%Y-%m-%dT%H:%M:%S')
+
+            keep_vars = vars(Asos_Observation).keys()
+            for key in list(properties.keys()):
+                if key not in keep_vars:
+                    del properties[key]
+
+
+
+            update[station_id] = properties
         
-        return(stations)
+        return(update)

@@ -62,3 +62,57 @@ class Observation(Base):
                          'units': 'Celsius', 'units_abbrev': u'\N{DEGREE SIGN}C'})
     windchill_f = Column('windchill_f', Float(), unique=False, info={
                          'units': 'Fahrenheit', 'units_abbrev': u'\N{DEGREE SIGN}F'})
+
+#Asos
+class Asos_Observation(Base):
+    __tablename__ = 'Asos_Observation'
+
+    #https://mesonet.agron.iastate.edu/api/
+    station = Column('station', String(255), unique=False)
+    name = Column('name', String(255), unique=False)
+    county = Column('county', String(255), unique=False)
+    state = Column('state', String(255), unique=False)
+    network = Column('network', String(255), unique=False)
+
+    local_date = Column('local_date', Date(), unique=False)
+
+    snow = Column('snow', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    snowd = Column('snowd', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    snoww = Column('snoww', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+
+    utc_valid = Column('utc_valid', DateTime(), unique=True)
+    local_valid = Column('local_valid', DateTime(), unique=True,primary_key=True)
+
+    tmpf = Column('tmpf', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    max_tmpf = Column('max_tmpf', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    min_tmpf = Column('min_tmpf', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    dwpf = Column('dwpf', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    relh = Column('relh', Integer(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    sknt = Column('sknt', Integer(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    drct = Column('drct', Integer(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    gust = Column('gust', Integer(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    mslp = Column('mslp', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    pres = Column('pres', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    srad = Column('srad', Integer(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    phour = Column('phour', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    lon = Column('lon', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    lat = Column('lat', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
+    pday = Column('pday', Float(), unique=False, info={
+                        'units': '', 'units_abbrev': ''})
