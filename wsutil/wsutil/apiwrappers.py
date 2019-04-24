@@ -23,6 +23,7 @@ class Asos:
         return(simple_get(self.url))
 
     def get_update(self):
+        #NOTE: This Api only gets hourly Updates
         json = self.__request()
         update = {}
         for feature in json['features']:
@@ -46,3 +47,15 @@ class Asos:
             update[station_id] = properties
         
         return(update)
+
+        #TODO: Use OTHER Api 5-minute Resolution
+        #NOTE: 5 minute observations do not contain as much detail as hourly obs
+        '''https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?
+        station=JFK&station=JRB&station=LGA&station=NYC&
+        data=tmpf&data=tmpc&data=dwpf&data=dwpc&data=relh&data=feel&data=drct&data=sknt&data=sped&data=mslp&data=p01m&data=p01i&data=gust&data=gust_mph&data=peak_wind_gust&data=peak_wind_gust_mph&data=peak_wind_drct&data=peak_wind_time
+        &year1=2019&month1=4&day1=24&year2=2019&month2=4&day2=24&tz=America%2FNew_York
+        &format=onlycomma
+        &latlon=yes
+        &trace=empty
+        &direct=no
+        '''
