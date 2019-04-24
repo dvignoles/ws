@@ -13,7 +13,10 @@ from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 
 from wsutil.utilities import get_tree, parse_xml_tag,get_datetime,get_datetime_str,get_soup,send_email
-from wsutil.models import Observation
+from wsutil.models import Observation,Asos_Observation,Base
+from wsutil.apiwrappers import Asos
+
+from multiprocessing import Process
 
 
 ###---CONFIG---#########################################
@@ -38,8 +41,79 @@ KEEP_TAGS = [
 
 ###------------#########################################
 
+def db_record(Session,wl_url,wl_alert):
+    asos = Process(target=asos_record,args=(Session,))
+    asos.start()
+    wl = Process(target = wl_record,args=(wl_url,Session,wl_alert))
+    wl.start()
 
-def db_record(url, Session, alert):
+    asos.join()
+    wl.join()
+
+class Asos_Jfk(Base,Asos_Observation):
+    __tablename__ = 'asos_jfk'
+
+class Asos_Nyc(Base,Asos_Observation):
+    __tablename__ = 'asos_nyc'
+
+class Asos_Lga(Base,Asos_Observation):
+    __tablename__ = 'asos_lga'
+
+class Asos_Jrb(Base,Asos_Observation):
+    __tablename__ = 'asos_jrb'
+
+def asos_record(Session):
+    '''
+    asos: asos apiwrapper object representing network/stations to record
+    '''
+
+    #NOAA ASOS Network/stations to record 
+    stations = ['JFK','LGA','JRB','NYC']
+    asos = Asos('NY_ASOS',stations)
+
+    while True:
+        session = Session()
+
+        observations = asos.get_update()
+
+        try:
+            obs = Asos_Jfk(**observations['JFK'])
+            session.add(obs)
+            session.commit()
+            print('JFK: Successfuly Recorded')
+        except:
+            print('JFK: No updates')
+
+        try:
+            obs = Asos_Nyc(**observations['NYC'])
+            session.add(obs)
+            session.commit()
+            print('NYC: Successfuly Recorded')
+        except:
+            print('NYC: No updates')
+
+        try:
+            obs = Asos_Lga(**observations['LGA'])
+            session.add(obs)
+            session.commit()
+            print('LGA: Successfuly Recorded')
+        except:
+            print('LGA: No updates')
+
+        try:
+            obs = Asos_Jrb(**observations['JRB'])
+            session.add(obs)
+            session.commit()
+            print('JRB: Successfuly Recorded')
+        except:
+            print('JRB: No updates')
+
+        session.close()
+
+        print("asos_record sleeping...")
+        sleep(600)
+
+def wl_record(url, Session, alert):
     """
         Record from xml url to database connection on ten minute interval. 
             Email alerts automatically sent out if data not updating within 1 hour
@@ -52,6 +126,7 @@ def db_record(url, Session, alert):
                 sender: gmail to send alerts from
                 pass: password of sender gmail
                 receivers: list of emails to alert
+            
     """
 
     #flags
@@ -96,6 +171,7 @@ def db_record(url, Session, alert):
             #Cleanup
             session.close()
             alert_time,alert_sent = error_decision(error_count,alert,alert_time,alert_sent,time_of_scrape,scraped_time,last_time_in_db)
+            print('wl_record sleeping...')
             sleep(600) # 10 minutes
 
 

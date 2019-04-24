@@ -64,8 +64,7 @@ class Observation(Base):
                          'units': 'Fahrenheit', 'units_abbrev': u'\N{DEGREE SIGN}F'})
 
 #Asos
-class Asos_Observation(Base):
-    __tablename__ = 'Asos_Observation'
+class Asos_Observation():
 
     #https://mesonet.agron.iastate.edu/api/
     station = Column('station', String(255), unique=False)

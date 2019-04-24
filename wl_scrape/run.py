@@ -20,4 +20,4 @@ Session = db_init(os.environ['DEV_URI']) #Change to 'PROD_URI' to use Production
 
 alerts = {'sender':os.environ['ALERT_SENDER'],'pass':os.environ['ALERT_PASS'],'receivers':os.environ['ALERT_RECEIVERS']}
 
-db_record(XML_URL, Session,alerts)
+db_record(Session,XML_URL,alerts)
