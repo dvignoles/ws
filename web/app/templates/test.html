@@ -1,7 +1,7 @@
 <html>
     <h1>All Time (Low,High)</h1>
     
-    {% for key, value in all_time.items()%}
+    {% for key, value in asrc_all_time.items()%}
         <h4>{{key}}</h4>
         <p>High: {{value.high.val}} {{value.units}} on {{value.high.date}} at {{value.high.time}}</p>
         <p>Low: {{value.low.val}} {{value.units}} on {{value.low.date}} at {{value.low.time}} </p>
@@ -9,7 +9,7 @@
 
     <h1>Last Observation</h1>
 
-    {% for key, value in current.items() %}
+    {% for key, value in asrc_current.items() %}
         <h4>{{key}} : {{value}}</h4>
     {% endfor %}
     

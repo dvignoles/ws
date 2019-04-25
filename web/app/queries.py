@@ -1,21 +1,31 @@
-from wsutil.models import Observation
+from wsutil.models import Observation,Asos_Jfk,Asos_Jrb,Asos_Lga,Asos_Nyc
 from sqlalchemy import desc
 from collections import OrderedDict
+from app import db
 
-#TODO: Switch from passing in session to Query Objects
+#TODO: Switch from passing in db.session to Query Objects
 
-def get_current(session):
+def dict_from_row(row):
+    keys = row.__table__.columns.keys()
+
+    record = {}
+    for key in keys:
+        record[key] = getattr(row, key)
+
+    return record
+
+def asrc_current():
     """Return Dictionary of values from most recent observation"""
-    q = session.query(Observation).order_by(desc(Observation.datetime)).first()
+    q = db.session.query(Observation).order_by(desc(Observation.datetime)).first()
     return(dict_from_row(q))
 
 
-def get_alltime(session, keys):
+def asrc_alltime(keys):
     """Return First and Last values for sorted key in keys"""
     all_time = OrderedDict()
 
     for key in keys:
-        q = session.query(Observation).order_by(key).all()
+        q = db.session.query(Observation).order_by(key).all()
 
         low = {'val': getattr(q[0], key), 'date': q[0].date.isoformat(
         ), 'time': q[0].time.isoformat()}
@@ -27,9 +37,9 @@ def get_alltime(session, keys):
     return(all_time)
 
 
-def get_record(session, datetime):
+def asrc_get_record(datetime):
     #TODO: Query by partial date/time
-    row = session.query(Observation).filter_by(datetime=datetime).first()
+    row = db.session.query(Observation).filter_by(datetime=datetime).first()
     return(dict_from_row(row))
 
 
@@ -52,12 +62,36 @@ def get_units(model, column, abbreviated=True):
         except:
             return ''
 
+def choose_asos(station):
+    station = station.lower()
+    if station == 'nyc':
+        return Asos_Nyc
+    elif station == 'jfk':
+        return Asos_Jfk
+    elif station == 'lga':
+        return Asos_Lga
+    elif station == 'jrb':
+        return Asos_Jrb
+    else:
+        return None
 
-def dict_from_row(row):
-    keys = row.__table__.columns.keys()
+def asos_drange_avail(station):
+    table = choose_asos(station)
+    q = db.session.query(table)
+    return q[0].local_valid, q[-1].local_valid
 
-    record = {}
-    for key in keys:
-        record[key] = getattr(row, key)
+def asos_drange(stations,start,end):
+    station_observations = {}
+    for station in stations:
+        table = choose_asos(station)
+        station_observations[table.__station__] = db.session.query(table).filter(table.local_valid >= start, table.local_valid <= end)
+    
+    return station_observations #{'jfk':rows,'lga':rows ... etc}
 
-    return record
+def asos_current(stations):
+    station_observations = {}
+    for station in stations:
+        table = choose_asos(station)
+        station_observations[table.__station__] = db.session.query(table)[-1]
+    return station_observations
+    

@@ -115,3 +115,19 @@ class Asos_Observation():
                         'units': '', 'units_abbrev': ''})
     pday = Column('pday', Float(), unique=False, info={
                         'units': '', 'units_abbrev': ''})
+
+class Asos_Jfk(Base,Asos_Observation):
+    __tablename__ = 'asos_jfk'
+    __station__ = 'jfk'
+
+class Asos_Nyc(Base,Asos_Observation):
+    __tablename__ = 'asos_nyc'
+    __station__ = 'nyc'
+
+class Asos_Lga(Base,Asos_Observation):
+    __tablename__ = 'asos_lga'
+    __station__ = 'lga'
+
+class Asos_Jrb(Base,Asos_Observation):
+    __tablename__ = 'asos_jrb'
+    __station__ = 'jrb'

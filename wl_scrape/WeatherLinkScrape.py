@@ -13,7 +13,7 @@ from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 
 from wsutil.utilities import get_tree, parse_xml_tag,get_datetime,get_datetime_str,get_soup,send_email
-from wsutil.models import Observation,Asos_Observation,Base
+from wsutil.models import Observation,Asos_Jfk,Asos_Jrb,Asos_Lga,Asos_Nyc
 from wsutil.apiwrappers import Asos
 
 from multiprocessing import Process
@@ -50,17 +50,6 @@ def db_record(Session,wl_url,wl_alert):
     asos.join()
     wl.join()
 
-class Asos_Jfk(Base,Asos_Observation):
-    __tablename__ = 'asos_jfk'
-
-class Asos_Nyc(Base,Asos_Observation):
-    __tablename__ = 'asos_nyc'
-
-class Asos_Lga(Base,Asos_Observation):
-    __tablename__ = 'asos_lga'
-
-class Asos_Jrb(Base,Asos_Observation):
-    __tablename__ = 'asos_jrb'
 
 def asos_record(Session):
     '''

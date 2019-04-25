@@ -4,9 +4,11 @@ from flask import render_template
 
 from app import app, db
 
-from app.queries import get_alltime, get_record, get_current
+from app.queries import *
 
 from collections import OrderedDict
+
+from datetime import datetime
 
 # KEYS
 META_DATA = ['station_name', 'location', 'latitude', 'longitude', 'timezone']
@@ -42,8 +44,12 @@ def instruments():
 @app.route('/test')
 def test():
 
-    all_time = get_alltime(db.session, keys=SCALARS)
+    asrc_all_time = asrc_alltime(keys=SCALARS)
 
-    current = get_current(db.session)
+    asrc_now = asrc_current()
 
-    return render_template("test.html", all_time=all_time, current=current)
+    asos_within_drange = asos_drange(['lga','jfk','jrb','nyc'],datetime(2019,4,25,0),datetime(2019,4,25,23,59))
+
+    asos_now = asos_current(['jfk','lga','jrb','nyc'])
+
+    return render_template("test.html", asrc_all_time=asrc_all_time, asrc_current=asrc_now)
