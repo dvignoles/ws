@@ -1,114 +1,183 @@
 {% extends "base.html" %}
-{% block title %}Home Page{% endblock %}
+{% block title %}Home{% endblock %}
 {% block body %}
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>CUNY ASRC Weather Station</title>
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <title>CUNY ASRC Weather Station</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+
 </head>
+		<div>
+            <h1>CUNY ASRC Weather Station</h1>
+            <p class="lead">City University of New York <br/>Advanced Science Research Center</p>
+            <hr>
+        </div>
 <body>
-	<div class="Jumbotron">
-		<div >
-			<h1>CUNY ASRC Weather Station</h1>
-			<p>City University of New York <br/>Advanced Science Research Center</p>
-		</div>
 
-		<div class="box-2"> <!-- If I'm not mistaking, class is naming the work space-->
-			<h2>Current Weather</h2>
-			<iframe src='https://www.weatherlink.com/embeddablePage/show/9a75d7cbe1bb4ca48e592b6931ff62bb/wide' width='560' height='480' frameborder='0'></iframe>
-			<a class="button" href="https://www.weatherlink.com">Weather</a>
-		</div>
+        <div class="box-4" align="center"> 
+            <div>
+                <h2>Current Weather</h2>
+                <iframe src='https://www.weatherlink.com/embeddablePage/show/9a75d7cbe1bb4ca48e592b6931ff62bb/wide' width='560' height='480' frameborder='0' align="center"></iframe>
+                <br>
+                <a class="button" href="https://www.weatherlink.com">Vantage Pro 2+ Dedicated Website</a>
+            </div>
+            <hr>
+            <div class="row">
+            <div class="col-xs-6">
+                <h2>Today at a glance</h2>
+                <table class="table table-striped">
+                <thead>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Temperature Average</td>
+                    <td>950</td>
+                  </tr>
+                  <tr>
+                    <td>Temperature High</td>
+                    <td>600</td>
+                  </tr>
+                  <tr>
+                    <td>Temperature Low</td>
+                    <td>500</td>
+                  </tr>
+                  <tr>
+                      <td>Wind speed High</td>
+                      <td>120</td>
+                  </tr>
+                  <tr>
+                      <td>Wind speed Average</td>
+                      <td>300</td>
+                  </tr>
+                  <tr>
+                      <td>Total Precip</td>
+                      <td>140</td>
+                  </tr>
+                  <tr>
+                      <td>Humidity</td>
+                      <td>132</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> <!-- End Today At a Glance-->
 
-		<div class="categories">
-			<h2>Categories</h2>
-			<ul>
-				<li><a href="#">Category 1</a></li>
-				<li><a href="#">Category 2</a></li>
-				<li><a href="#">Category 3</a></li>
-				<li><a href="#">Category 4</a></li>
-				<li><a href="test.html">Category 5</a></li>
-			</ul>
-		</div>
+            <div class="col-xs-6">
+                <h2>Month at a glance</h2>
+                <table class="table table-striped">
+                <thead>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Temperature Average</td>
+                    <td>90</td>
+                  </tr>
+                  <tr>
+                    <td>Temperature High</td>
+                    <td>60</td>
+                  </tr>
+                  <tr>
+                    <td>Temperature Low</td>
+                    <td>50</td>
+                  </tr>
+                  <tr>
+                      <td>Wind speed High</td>
+                      <td>10</td>
+                  </tr>
+                  <tr>
+                      <td>Wind speed Average</td>
+                      <td>3080</td>
+                  </tr>
+                  <tr>
+                      <td>Total Precip</td>
+                      <td>10</td>
+                  </tr>
+                  <tr>
+                      <td>Humidity</td>
+                      <td>12</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> <!-- End Today At a Glance-->
+        </div> <!-- End row class-->
+        </div> <!-- End Box 4 Current Weather-->
 
-		<form class="my-form">
-			<div class="form-group">
-				<label>Name: </label>
-				<input type="text" name="name">
-			</div>
-			<div class="form-group">
-				<label>Email: </label>
-				<input type="text" name="email">
-			</div>
-			<div class="form-group">
-				<label>Message: </label>
-				<textarea name="message"></textarea>
-			</div>
-			<input class="button" type="submit" value="Submit" name="">
-		</form>
+<div><!--Place holders for graphs-->
+        <div class="box-4">
+            <button class="collapsible">Conditions Around NYC</button>
+            <div class="content">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Variables</th>
+                    <th>ASRC</th>
+                    <th>JFK</th>
+                    <th>LGA</th>
+                    <th>JRB</th>
+                    <th>NYC</th>
+                    <!-- <th>Average</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                      {% for key, value in nyc_current.items()%}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{value.asrc}}</td>
+                            <td>{{value.jfk}}</td>
+                            <td>{{value.lga}}</td>
+                            <td>{{value.jrb}}</td>
+                            <td>{{value.nyc}}</td>
+                        </tr>
+                      {% endfor %}
+        
+                </tbody>
+            </table>
+            </div>
+        </div>
 
-		<div class="block">
-			<h3>Heading</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			</p>
-		</div>
-		<div class="block">
-			<h3>Heading</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			</p>
-		</div>
-		<div class="block">
-			<h3>Heading</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			</p>
-		</div>
+        <div class="box-4">
+            <button class="collapsible">Forcast Map New York Metro Area</button>
+            <div class="content">
+                <div class="row">
+            <div class="col-xs-6">
+        	<img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width = '600' alt="Line Graph Place Holder" align="middle">
+        	<p> Courtesy of the National Weather Service</p>
+        </div>
+        <div class="col-xs-6">
+            <img src="https://cdn.star.nesdis.noaa.gov/GOES16/ABI/GIFS/GOES16-NE-GEOCOLOR-600x600.gif" width = '600' alt="Line Graph Place Holder" align="middle">
+            <P> Courtesy of National Oceanic and Atmospheric Administration</P>
+        </div>
+            </div>
+    </div>        <div class="box-4">
+            <button class="collapsible">Relative Humidity*</button>
+            <div class="content">
+        	<img src="../static/Images/graph1.jpg" width = '600' alt="Line Graph Place Holder" align="center">
+        	<br>
+        	<p> *Place holder for Graphs</p>
+        </div>
+         </div>
+        </div>
 
-		<div class="clr"></div>
-
-		<div id="main-block">
-			<h3>Heading</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-			</p>
-		</div>
-
-		<!-- <div id="sidebar">
-			<p> SIDE BAR
-			</p>
-		</div>
- -->
-		<div class="clr"></div>
-
-		<div class="p-box">
-			<h1>Hello</h1>
-			<h2>Goodbye</h2>
-		</div>
-
-		<!-- <ul class="my-list">
-			<li>List Item</li>
-			<li>List Item</li>
-			<li>List Item</li>
-			<li>List Item</li>
-			<li>List Item</li>
-			<li>List Item</li>
-			<li>List Item</li>
-			<li>List Item</li>
-			<li>List Item</li>
-			<li>List Item</li>
-			<li>List Item</li>
-			<li>List Item</li>
-		</ul> -->
-	</div><!-- ./container -->
-
-	<a class="fix-me button" href="">Side Bar<br> Data</a>
-
-	<div style="margin-top:500px;"></div>
 </body>
 </html>
 
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+
 {% endblock %}
- 

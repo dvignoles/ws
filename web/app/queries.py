@@ -3,10 +3,21 @@ from sqlalchemy import desc
 from collections import OrderedDict
 from app import db
 
-#TODO: Switch from passing in db.session to Query Objects
 
-def dict_from_row(row):
+ASRC_DATA_VAR = ['datetime', 'sunrise', 'sunset','temp_f', 'dewpoint_f','heat_index_f', 
+   'pressure_mb', 'rain_day_in', 'relative_humidity', 'solar_radiation', 'uv_index',
+   'wind_degrees', 'wind_dir', 'wind_kt', 'windchill_f']
+
+#coversion for analagous asrc/asos variables
+asrc_asos = {'datetime':'local_valid','temp_f':'tmpf','dewpoint_f':'dwpf',
+'pressure_mb':'mslp','relative_humidity':'relh','rain_day_in':'pday','wind_kt':'sknt','wind_degrees':'drct'}
+
+def dict_from_row(row,keep_keys=None):
     keys = row.__table__.columns.keys()
+
+    if keep_keys:
+        assert(set(keep_keys).issubset(keys))
+        keys = keep_keys
 
     record = {}
     for key in keys:
@@ -14,10 +25,10 @@ def dict_from_row(row):
 
     return record
 
-def asrc_current():
+def asrc_current(keys=None):
     """Return Dictionary of values from most recent observation"""
     q = db.session.query(Observation).order_by(desc(Observation.datetime)).first()
-    return(dict_from_row(q))
+    return dict_from_row(q,keep_keys=keys)
 
 
 def asrc_alltime(keys):
@@ -88,10 +99,23 @@ def asos_drange(stations,start,end):
     
     return station_observations #{'jfk':rows,'lga':rows ... etc}
 
-def asos_current(stations):
+def asos_current(stations,keys=None):
     station_observations = {}
     for station in stations:
         table = choose_asos(station)
-        station_observations[table.__station__] = db.session.query(table)[-1]
+        station_observations[table.__station__] = dict_from_row(db.session.query(table)[-1],keep_keys=keys)
     return station_observations
+
+def nyc_current():
+    asrc_now = asrc_current(keys = asrc_asos.keys())
+    asos_now = asos_current(['jfk','lga','jrb','nyc'],keys = asrc_asos.values())
+
+    results = {}
+    for asrc,asos in asrc_asos.items():
+        key = asrc
+        if key == 'datetime':
+            key ='update_time'
+        results[key] = {'asrc':asrc_now[asrc],'jfk':asos_now['jfk'][asos],'lga':asos_now['lga'][asos],'jrb':asos_now['jrb'][asos],'nyc':asos_now['nyc'][asos]}
+
+    return results
     

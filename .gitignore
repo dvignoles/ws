@@ -135,4 +135,6 @@ alembic.ini
 alembic
 
 #misc testing
+app_backup/
 wl_scrape/asos_test.py
+*desktop.ini

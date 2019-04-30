@@ -1,5 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+
+<!DOCTYPE html>
+
 <html>
-    <h1>All Time (Low,High)</h1>
+    <!-- <h1>All Time (Low,High)</h1>
     
     {% for key, value in asrc_all_time.items()%}
         <h4>{{key}}</h4>
@@ -11,6 +17,34 @@
 
     {% for key, value in asrc_current.items() %}
         <h4>{{key}} : {{value}}</h4>
-    {% endfor %}
-    
+    {% endfor %} -->
+
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>ASRC</th>
+            <th>JFK</th>
+            <th>LGA</th>
+            <th>JRB</th>
+            <th>NYC</th>
+            <!-- <th>Average</th> -->
+          </tr>
+        </thead>
+        <tbody>
+              {% for key, value in nyc_current.items()%}
+                <tr>
+                    <td>{{key}}</td>
+                    <td>{{value.asrc}}</td>
+                    <td>{{value.jfk}}</td>
+                    <td>{{value.lga}}</td>
+                    <td>{{value.jrb}}</td>
+                    <td>{{value.nyc}}</td>
+                </tr>
+              {% endfor %}
+
+        </tbody>
+    </table>
 </html>
+
+{% endblock %}

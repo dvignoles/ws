@@ -28,8 +28,16 @@ FACTORS = [
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    nyc = nyc_current()
+    return render_template("index.html",nyc_current=nyc)
 
+@app.route('/Records')
+def Records():
+    return render_template("Records.html")
+
+@app.route('/Charts')
+def Charts():
+    return render_template("Charts.html")
 
 @app.route('/about')
 def about():
@@ -43,13 +51,16 @@ def instruments():
 
 @app.route('/test')
 def test():
-
     asrc_all_time = asrc_alltime(keys=SCALARS)
 
     asrc_now = asrc_current()
 
-    asos_within_drange = asos_drange(['lga','jfk','jrb','nyc'],datetime(2019,4,25,0),datetime(2019,4,25,23,59))
-
     asos_now = asos_current(['jfk','lga','jrb','nyc'])
 
-    return render_template("test.html", asrc_all_time=asrc_all_time, asrc_current=asrc_now)
+    nyc = nyc_current()
+
+    # asos_within_drange = asos_drange(['lga','jfk','jrb','nyc'],datetime(2019,4,25,0),datetime(2019,4,25,23,59))
+
+    # asos_now = asos_current(['jfk','lga','jrb','nyc'])
+
+    return render_template("test.html", asrc_all_time=asrc_all_time, asrc_current=asrc_now,nyc_current=nyc)
