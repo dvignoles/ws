@@ -28,8 +28,10 @@ FACTORS = [
 
 @app.route('/')
 def index():
-    nyc = nyc_current()
-    return render_template("index.html",nyc_current=nyc)
+    nyc = nyc_current(db.session)
+    asrc_today_avg = asrc_averages(db.session,'day')
+    asrc_month_avg = asrc_averages(db.session,'month')
+    return render_template("index.html",nyc_current=nyc,asrc_today_avg = asrc_today_avg,asrc_month_avg = asrc_month_avg)
 
 @app.route('/Records')
 def Records():
@@ -51,16 +53,16 @@ def instruments():
 
 @app.route('/test')
 def test():
-    asrc_all_time = asrc_alltime(keys=SCALARS)
+    asrc_all_time = asrc_alltime(db.session,keys=SCALARS)
 
-    asrc_now = asrc_current()
+    asrc_now = asrc_current(db.session)
 
-    asos_now = asos_current(['jfk','lga','jrb','nyc'])
+    asos_now = asos_current(db.session,['jfk','lga','jrb','nyc'])
 
-    nyc = nyc_current()
+    #nyc = nyc_current(db.session)
 
     # asos_within_drange = asos_drange(['lga','jfk','jrb','nyc'],datetime(2019,4,25,0),datetime(2019,4,25,23,59))
 
     # asos_now = asos_current(['jfk','lga','jrb','nyc'])
 
-    return render_template("test.html", asrc_all_time=asrc_all_time, asrc_current=asrc_now,nyc_current=nyc)
+    return render_template("test.html", asrc_all_time=asrc_all_time, asrc_current=asrc_now)
