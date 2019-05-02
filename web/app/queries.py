@@ -3,31 +3,44 @@ from sqlalchemy import desc,func
 from collections import OrderedDict
 from datetime import datetime,date,time
 
-ASRC_DATA_VAR = ['datetime', 'sunrise', 'sunset','temp_f', 'dewpoint_f','heat_index_f', 
-   'pressure_mb', 'rain_day_in', 'relative_humidity', 'solar_radiation', 'uv_index',
+ASRC_DATA_VAR = ['time', 'temp_f', 'dewpoint_f','heat_index_f', 
+   'pressure_mb', 'rain_day_in','rain_rate_in_per_hr','relative_humidity', 'solar_radiation', 'uv_index',
    'wind_degrees', 'wind_dir', 'wind_kt', 'windchill_f']
+
+ASRC_DATA_VAR_ABBREV = {'time':'time' , 'temp_f':'temp_f', 'dewpoint_f':'dwp_f','heat_index_f':'heat_ind', 
+   'pressure_mb':'press_mb', 'rain_day_in':'rain_day','rain_rate_in_per_hr':'rain_per_hr','relative_humidity':'rel_h',
+    'solar_radiation':'solar_rad', 'uv_index':'uv_ind',
+   'wind_degrees':'wind_deg', 'wind_dir':'wind_dir', 'wind_kt':'wind_kt', 'windchill_f':'windchill_f'}
 
 #coversion for analagous asrc/asos variables
 asrc_asos = {'datetime':'local_valid','temp_f':'tmpf','dewpoint_f':'dwpf',
 'pressure_mb':'mslp','relative_humidity':'relh','rain_day_in':'pday','wind_kt':'sknt','wind_degrees':'drct'}
 
-def dict_from_row(row,keep_keys=None):
+def dict_from_row(row,keep_keys=None,abbrev_dic = None):
     keys = row.__table__.columns.keys()
 
     if keep_keys:
         assert(set(keep_keys).issubset(keys))
         keys = keep_keys
 
-    record = {}
+    record = OrderedDict()
     for key in keys:
-        record[key] = getattr(row, key)
+        if abbrev_dic:
+            record[abbrev_dic[key]] = getattr(row, key)
+        else:
+            record[key] = getattr(row, key)
 
     return record
 
 def asrc_current(session):
-    """Return Dictionary of values from most recent observation"""
+    """Return a query from most recent observation"""
     q = session.query(Observation)[-1]
     return q
+
+def asrc_recent_observation(session):
+    q = session.query(Observation).order_by(desc(Observation.datetime))[0:10]
+    rows = list(map(lambda p:dict_from_row(p,keep_keys=ASRC_DATA_VAR,abbrev_dic=ASRC_DATA_VAR_ABBREV),q))
+    return rows
 
 def asrc_today(session):
     today = datetime.today().date()

@@ -1,55 +1,59 @@
-{% extends "base.html" %}
-{% block title %}Charts{% endblock %}
-{% block body %}
+{% extends "base.html" %} {% block title %}Charts{% endblock %} {% block body %}
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Charts</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+  <title>Charts</title>
 </head>
 
 <body>
-      <div>
-            <h1>Charts</h1>
-            <p class="lead">Visual Presentation of Climate Data for New York City </p>
-            <hr>
-        </div>
+  <div>
+    <h1>Charts</h1>
+    <p class="lead">Visual Presentation of Climate Data for New York City </p>
+    <hr>
+  </div>
 
-        <div class="box-4">
-                 <div class="row">
-        <div class="col-xs-6">
-        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width = '600' alt="Line Graph Place Holder" align="middle">
-        <p align="middle"> Courtesy of the National Weather Service</p>
-
-        </div>
-        <div class="col-xs-6">
-        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width = '600' alt="Line Graph Place Holder" align="middle">
-        <p align="middle"> Courtesy of the National Weather Service</p>
-        </div>
-          </div>
-          <div class="row">
-        <div class="col-xs-6">
-        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width = '600' alt="Line Graph Place Holder" align="middle">
+  <div class="box-4">
+    <div class="row">
+      <div class="col-xs-6">
+        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width='600' alt="Line Graph Place Holder" align="middle">
         <p align="middle"> Courtesy of the National Weather Service</p>
 
-        </div>
-        <div class="col-xs-6">
-        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width = '600' alt="Line Graph Place Holder" align="middle">
+      </div>
+      <div class="col-xs-6">
+        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width='600' alt="Line Graph Place Holder" align="middle">
         <p align="middle"> Courtesy of the National Weather Service</p>
-        </div>
-          </div>
-          <a class="button" href="">Today</a>
-          <a class="button" href="">Week</a>
-          <a class="button" href="">Month</a>
-          <a class="button" href="">Year</a>
-          <br><br>
-           <label class="checkbox-inline"><input type="checkbox" value="">ASRC</label>
-          <label class="checkbox-inline"><input type="checkbox" value="">NYC</label>
-          <label class="checkbox-inline"><input type="checkbox" value="">LGA</label> 
-          <label class="checkbox-inline"><input type="checkbox" value="">JFK</label> 
-          <label class="checkbox-inline"><input type="checkbox" value="">JRB</label> 
-        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width='600' alt="Line Graph Place Holder" align="middle">
+        <p align="middle"> Courtesy of the National Weather Service</p>
+
+      </div>
+      <div class="col-xs-6">
+        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width='600' alt="Line Graph Place Holder" align="middle">
+        <p align="middle"> Courtesy of the National Weather Service</p>
+      </div>
+    </div>
+    <a class="button" href="">Today</a>
+    <a class="button" href="">Week</a>
+    <a class="button" href="">Month</a>
+    <a class="button" href="">Year</a>
+    <br>
+    <br>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">ASRC</label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">NYC</label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">LGA</label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">JFK</label>
+    <label class="checkbox-inline">
+      <input type="checkbox" value="">JRB</label>
+  </div>
 </body>
 
 

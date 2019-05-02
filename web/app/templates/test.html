@@ -5,46 +5,7 @@
 <!DOCTYPE html>
 
 <html>
-    <!-- <h1>All Time (Low,High)</h1>
-    
-    {% for key, value in asrc_all_time.items()%}
-        <h4>{{key}}</h4>
-        <p>High: {{value.high.val}} {{value.units}} on {{value.high.date}} at {{value.high.time}}</p>
-        <p>Low: {{value.low.val}} {{value.units}} on {{value.low.date}} at {{value.low.time}} </p>
-    {% endfor %}
 
-    <h1>Last Observation</h1>
-
-    {% for key, value in asrc_current.items() %}
-        <h4>{{key}} : {{value}}</h4>
-    {% endfor %} -->
-
-    <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Variable</th>
-            <th>ASRC</th>
-            <th>JFK</th>
-            <th>LGA</th>
-            <th>JRB</th>
-            <th>NYC</th>
-            <!-- <th>Average</th> -->
-          </tr>
-        </thead>
-        <tbody>
-              {% for key, value in nyc_current.items()%}
-                <tr>
-                    <td>{{key}}</td>
-                    <td>{{value.asrc}}</td>
-                    <td>{{value.jfk}}</td>
-                    <td>{{value.lga}}</td>
-                    <td>{{value.jrb}}</td>
-                    <td>{{value.nyc}}</td>
-                </tr>
-              {% endfor %}
-
-        </tbody>
-    </table>
 </html>
 
 {% endblock %}

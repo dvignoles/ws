@@ -1,159 +1,200 @@
-{% extends "base.html" %}
-{% block title %}Home{% endblock %}
-{% block body %}
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block body %}
 
 <!DOCTYPE html>
 <html>
+
 <head>
 
     <title>CUNY ASRC Weather Station</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
 
 </head>
-		<div>
-            <h1>CUNY ASRC Weather Station</h1>
-            <p class="lead">City University of New York <br/>Advanced Science Research Center</p>
-            <hr>
-        </div>
+
+<div class="jumbotron">
+    <h2>CUNY ASRC Weather Station</h1>
+        <p class="lead">City University of New York
+            <br/>Advanced Science Research Center</p>
+</div>
+
+
 <body>
 
-        <div class="box-4" align="center"> 
-            <div>
-                <h2>Current Weather</h2>
-                <iframe src='https://www.weatherlink.com/embeddablePage/show/9a75d7cbe1bb4ca48e592b6931ff62bb/wide' width='560' height='480' frameborder='0' align="center"></iframe>
-                <br>
-                <a class="button" href="https://www.weatherlink.com">Vantage Pro 2+ Dedicated Website</a>
-            </div>
-            <hr>
-            <div class="row">
-            <div class="col-xs-6">
-                <h2>Today at a glance</h2>
-                <table class="table table-striped">
+    <div class="panel" align="center">
+        <h2>Recent Observations from ASRC</h2>
+        <div class="table-responsive">
+            <table class="table table-condensed">
                 <thead>
                     <tr>
-                        <th>var</td>
-                        <th>high</th>
-                        <th>low</th>
-                        <th>avg</th>
+                        {% for key in asrc_recent[0].keys() %}
+                        <th> {{ key }}</th>
+                        {% endfor %}
                     </tr>
+
                 </thead>
                 <tbody>
-                    {% for var,hl_dic in asrc_today_avg.hl.items() %} 
-                        
-                        <tr>
-                            <td>{{var}}</td>
-                            <td>{{hl_dic.high}}</td>
-                            <td>{{hl_dic.low}}</td>
-                            <td>{{hl_dic.avg}}</td>
-                        </tr>
-                        
+                    {% for row in asrc_recent %}
+                    <tr>
+                        {% for key,val in row.items() %}
+                        <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
 
                 </tbody>
-              </table>
-            </div> <!-- End Today At a Glance-->
+            </table>
 
+        </div>
+        <br>
+        <a class="button" href="https://www.weatherlink.com">Vantage Pro 2+ Dedicated Website</a>
+    </div>
+    <div class="table-responsive">
+
+        <div class="row">
             <div class="col-xs-6">
-                    <h2>Month at a glance</h2>
+                <div class="panel">
+                    <h2 align="center">Today at a glance</h2>
                     <table class="table table-striped">
-                    <thead>
+                        <thead>
                             <tr>
+                                <th>var</td>
                                     <th>high</th>
                                     <th>low</th>
                                     <th>avg</th>
-                                </tr>
-                    </thead>
-                    <tbody>
-                            {% for var,hl_dic in asrc_month_avg.hl.items() %} 
-                        
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for var,hl_dic in asrc_today_avg.hl.items() %}
+
+                            <tr>
+                                <td>{{var}}</td>
+                                <td>{{hl_dic.high}}</td>
+                                <td>{{hl_dic.low}}</td>
+                                <td>{{hl_dic.avg}}</td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="col-xs-6">
+                <div class="panel">
+                    <h2 align="center">Month at a glance</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>high</th>
+                                <th>low</th>
+                                <th>avg</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for var,hl_dic in asrc_month_avg.hl.items() %}
+
                             <tr>
                                 <td>{{hl_dic.high}}</td>
                                 <td>{{hl_dic.low}}</td>
                                 <td>{{hl_dic.avg}}</td>
                             </tr>
-                            
-                        {% endfor %}
-                    </tbody>
-                  </table>
 
-                </div> <!-- End Today At a Glance-->  
-        </div> <!-- End row class-->
-        </div> <!-- End Box 4 Current Weather-->
+                            {% endfor %}
+                        </tbody>
+                    </table>
 
-<div><!--Place holders for graphs-->
-        <div class="box-4">
-            <button class="collapsible">Conditions Around NYC</button>
-            <div class="content">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Variables</th>
-                    <th>ASRC</th>
-                    <th>JFK</th>
-                    <th>LGA</th>
-                    <th>JRB</th>
-                    <th>NYC</th>
-                    <!-- <th>Average</th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                      {% for key, value in nyc_current.items()%}
-                        <tr>
-                            <td>{{key}}</td>
-                            <td>{{value.asrc}}</td>
-                            <td>{{value.jfk}}</td>
-                            <td>{{value.lga}}</td>
-                            <td>{{value.jrb}}</td>
-                            <td>{{value.nyc}}</td>
-                        </tr>
-                      {% endfor %}
-        
-                </tbody>
-            </table>
+                </div>
+
             </div>
         </div>
 
-        <div class="box-4">
-            <button class="collapsible">Forcast Map New York Metro Area</button>
-            <div class="content">
-                <div class="row">
+        <!-- End Today At a Glance-->
+
+
+    </div>
+
+    <!-- End row class-->
+
+    <div>
+        <!--Place holders for graphs-->
+        <div class="panel">
+            <div class="panel-heading">
+                <h2 align="center">Conditions Around NYC</h2>
+            </div>
+
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Variables</th>
+                                <th>ASRC</th>
+                                <th>JFK</th>
+                                <th>LGA</th>
+                                <th>JRB</th>
+                                <th>NYC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key, value in nyc_current.items()%}
+                            <tr>
+                                <td>{{key}}</td>
+                                <td>{{value.asrc}}</td>
+                                <td>{{value.jfk}}</td>
+                                <td>{{value.lga}}</td>
+                                <td>{{value.jrb}}</td>
+                                <td>{{value.nyc}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+            <!-- </div> -->
+        </div>
+
+        <div class="row">
             <div class="col-xs-6">
-        	<img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width = '600' alt="Line Graph Place Holder" align="middle">
-        	<p> Courtesy of the National Weather Service</p>
-        </div>
-        <div class="col-xs-6">
-            <img src="https://cdn.star.nesdis.noaa.gov/GOES16/ABI/GIFS/GOES16-NE-GEOCOLOR-600x600.gif" width = '600' alt="Line Graph Place Holder" align="middle">
-            <P> Courtesy of National Oceanic and Atmospheric Administration</P>
-        </div>
+                <div class="well">
+                    <h2 align="center">OKX Radar</h2>
+                    <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" class="img-responsive">
+                    <p> Courtesy of the National Weather Service</p>
+                </div>
             </div>
-    </div>        <div class="box-4">
-            <button class="collapsible">Relative Humidity*</button>
-            <div class="content">
-        	<img src="../static/Images/graph1.jpg" width = '600' alt="Line Graph Place Holder" align="center">
-        	<br>
-        	<p> *Place holder for Graphs</p>
-        </div>
-         </div>
+
+            <div class="col-xs-6">
+                <div class="well">
+                    <h2 align="center">GOES-East Satellite</h2>
+                    <img src="https://cdn.star.nesdis.noaa.gov/GOES16/ABI/GIFS/GOES16-NE-GEOCOLOR-600x600.gif" class="img-responsive" align="middle">
+                    <P> Courtesy of National Oceanic and Atmospheric Administration</P>
+                </div>
+            </div>
+
+
+
         </div>
 
 </body>
+
 </html>
 
-<script>
-var coll = document.getElementsByClassName("collapsible");
-var i;
+<!-- <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
 
-for (i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.maxHeight){
-      content.style.maxHeight = null;
-    } else {
-      content.style.maxHeight = content.scrollHeight + "px";
-    } 
-  });
-}
-</script>
-
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    }
+</script>  -->
 {% endblock %}

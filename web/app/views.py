@@ -31,7 +31,8 @@ def index():
     nyc = nyc_current(db.session)
     asrc_today_avg = asrc_averages(db.session,'day')
     asrc_month_avg = asrc_averages(db.session,'month')
-    return render_template("index.html",nyc_current=nyc,asrc_today_avg = asrc_today_avg,asrc_month_avg = asrc_month_avg)
+    asrc_recent = asrc_recent_observation(db.session)
+    return render_template("index.html",nyc_current=nyc,asrc_today_avg = asrc_today_avg,asrc_month_avg = asrc_month_avg,asrc_recent=asrc_recent)
 
 @app.route('/Records')
 def Records():

@@ -2,49 +2,68 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>{% block title %}{% endblock %}</title>
-          <!-- Bootstrap core CSS -->
-          <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-          <!-- jQuery library -->
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-          <!-- Latest compiled JavaScript -->
-          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-            <!-- Custom styles for this template HERE-->
-  </head>
-  <body>
-    <div class="container">
-      <div class="header clearfix">
-        <nav>
-          <ul class="nav nav-pills pull-left">
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('about') }}">About</a></li>
-            <li><a href="{{ url_for('instruments') }}">Instruments</a></li>
-            <li><a href="{{ url_for('Records') }}">Records</a></li>
-            <li><a href="{{ url_for('Charts') }}">Charts</a></li>  
-            <li><a href="{{ url_for('test') }}">Test</a></li>  
-          </ul>
-          <br><hr>
-        </nav>
-      </div>
-      {% block body %}
-        <!--All templates that extend base render here-->
-      {% endblock %}
-      <div class ="jumbotron">
-      <footer class="footer">
-        
-        <img src="../static/Images/nsflogotrans.png" alt="National Science Foundation Logo" width="100">
-        <img src="../static/Images/cuny_blue.png" alt="City University of New York Logo" width="200">
-        <img src="../static/Images/cuny-ASRC-Logo.png" alt="CUNY ASRC Logo">
 
-        <p>
-          © 2019 Daniel Vignoles, Shivron Sugrim
-          <br>
-          CUNY Advanced Science Research Center
-        </p>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap core CSS -->
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 
-      </footer>
-              </div>
-    </div> <!-- /container -->
-  </body>
+  <!-- Custom CSS classes -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}">
+</head>
+
+<div class="container">
+  <div class="header clearfix">
+    <nav>
+      <ul class="nav nav-pills pull-left">
+        <li>
+          <a href="{{ url_for('index') }}">Home</a>
+        </li>
+        <li>
+          <a href="{{ url_for('about') }}">About</a>
+        </li>
+        <li>
+          <a href="{{ url_for('instruments') }}">Instruments</a>
+        </li>
+        <li>
+          <a href="{{ url_for('Records') }}">Records</a>
+        </li>
+        <li>
+          <a href="{{ url_for('Charts') }}">Charts</a>
+        </li>
+        <li>
+          <a href="{{ url_for('test') }}">Test</a>
+        </li>
+      </ul>
+      <br>
+      <hr>
+    </nav>
+  </div>
+  {% block body %}
+  <!--All templates that extend base render here-->
+  {% endblock %}
+  <div class="jumbotron">
+    <footer class="footer">
+
+      <img src="../static/Images/nsflogotrans.png" alt="National Science Foundation Logo" width="100">
+      <img src="../static/Images/cuny_blue.png" alt="City University of New York Logo" width="200">
+      <img src="../static/Images/cuny-ASRC-Logo.png" alt="CUNY ASRC Logo">
+
+      <p>
+        © 2019 Daniel Vignoles, Shivron Sugrim
+        <br> CUNY Advanced Science Research Center
+      </p>
+
+    </footer>
+  </div>
+</div>
+<!-- /container -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script src="../static/js/bootstrap.min.js"></script>
+
 </html>
