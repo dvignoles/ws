@@ -16,8 +16,8 @@ token = os.environ['WS_TOKEN']
 XML_URL = 'https://api.weatherlink.com/v1/NoaaExt.xml?user=' + \
     username + '&pass=' + password + '&apiToken=' + token
 
-Session = db_init(os.environ['DEV_URI']) #Change to 'PROD_URI' to use Production Database
+# Session = db_init(os.environ['DEV_URI']) 
 
 alerts = {'sender':os.environ['ALERT_SENDER'],'pass':os.environ['ALERT_PASS'],'receivers':os.environ['ALERT_RECEIVERS']}
 
-db_record(Session,XML_URL,alerts)
+db_record(os.environ['DEV_URI'],XML_URL,alerts) #Change to 'PROD_URI' to use Production Database

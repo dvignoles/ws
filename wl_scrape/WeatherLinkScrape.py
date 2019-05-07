@@ -15,6 +15,7 @@ from sqlalchemy.exc import IntegrityError
 from wsutil.utilities import get_tree, parse_xml_tag,get_datetime,get_datetime_str,get_soup,send_email
 from wsutil.models import Observation,Asos_Jfk,Asos_Jrb,Asos_Lga,Asos_Nyc
 from wsutil.apiwrappers import Asos
+from wsutil.sqlalch import db_init
 
 from multiprocessing import Process
 
@@ -41,17 +42,17 @@ KEEP_TAGS = [
 
 ###------------#########################################
 
-def db_record(Session,wl_url,wl_alert):
-    asos = Process(target=asos_record,args=(Session,))
+def db_record(DB_URI,wl_url,wl_alert):
+    asos = Process(target=asos_record,args=(DB_URI,))
     asos.start()
-    wl = Process(target = wl_record,args=(wl_url,Session,wl_alert))
+    wl = Process(target = wl_record,args=(wl_url,DB_URI,wl_alert))
     wl.start()
 
     asos.join()
     wl.join()
 
 
-def asos_record(Session):
+def asos_record(DB_URI):
     '''
     asos: asos apiwrapper object representing network/stations to record
     '''
@@ -61,6 +62,7 @@ def asos_record(Session):
     asos = Asos('NY_ASOS',station_tables.keys())
 
     while True:
+        Session = db_init(DB_URI)
         session = Session()
 
         observations = asos.get_update()
@@ -93,7 +95,7 @@ def asos_record(Session):
         print("asos_record sleeping...")
         sleep(60 * 30)
 
-def wl_record(url, Session, alert):
+def wl_record(url, DB_URI, alert):
     """
         Record from xml url to database connection on ten minute interval. 
             Email alerts automatically sent out if data not updating within 1 hour
@@ -115,6 +117,7 @@ def wl_record(url, Session, alert):
     alert_time = None
 
     while True:
+        Session = db_init(DB_URI)
         session = Session()
         observation = Observation(**wl_soup(url))
         
