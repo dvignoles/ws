@@ -57,50 +57,41 @@ def asos_record(Session):
     '''
 
     #NOAA ASOS Network/stations to record 
-    stations = ['JFK','LGA','JRB','NYC']
-    asos = Asos('NY_ASOS',stations)
+    station_tables = {'JFK':Asos_Jfk,'LGA':Asos_Lga,'JRB':Asos_Jrb,'NYC':Asos_Nyc}
+    asos = Asos('NY_ASOS',station_tables.keys())
 
     while True:
         session = Session()
 
         observations = asos.get_update()
 
-        try:
-            obs = Asos_Jfk(**observations['JFK'])
-            session.add(obs)
-            session.commit()
-            print('JFK: Successfuly Recorded')
-        except:
-            print('JFK: No updates')
-
-        try:
-            obs = Asos_Nyc(**observations['NYC'])
-            session.add(obs)
-            session.commit()
-            print('NYC: Successfuly Recorded')
-        except:
-            print('NYC: No updates')
-
-        try:
-            obs = Asos_Lga(**observations['LGA'])
-            session.add(obs)
-            session.commit()
-            print('LGA: Successfuly Recorded')
-        except:
-            print('LGA: No updates')
-
-        try:
-            obs = Asos_Jrb(**observations['JRB'])
-            session.add(obs)
-            session.commit()
-            print('JRB: Successfuly Recorded')
-        except:
-            print('JRB: No updates')
+        for station,table in station_tables.items():
+            try:
+                try:
+                    obs = table(**observations[station])
+                except:
+                    print("Error obtaining update for {}".format(station))
+                    continue
+                try:
+                    session.add(obs)
+                except:
+                    session.rollback()
+                    print("Error adding obs to session for {}".format(station))
+                    continue
+                try:
+                    session.commit()
+                    print('{}: Successfuly Recorded'.format(station))
+                except IntegrityError:
+                    session.rollback()
+                    print('No new observation found for {}'.format(station))
+                    continue
+            except Exception as e:
+                print("Unforseen error in asos_record: ",e)
 
         session.close()
 
         print("asos_record sleeping...")
-        sleep(600)
+        sleep(60 * 30)
 
 def wl_record(url, Session, alert):
     """
