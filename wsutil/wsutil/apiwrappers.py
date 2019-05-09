@@ -25,8 +25,12 @@ class Asos:
     def get_update(self):
         #NOTE: This Api only gets hourly Updates
         json = self.__request()
+
+        if json == None:
+            raise RuntimeError('None received from web request for {}'.format(self.network))
+
         update = {}
-        for feature in json['features']:
+        for feature in json['features']: 
             station_id = feature['id']
             if station_id not in self.stations:
                 continue

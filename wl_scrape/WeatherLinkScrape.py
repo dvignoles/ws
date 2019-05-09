@@ -65,8 +65,14 @@ def asos_record(DB_URI):
         Session = db_init(DB_URI)
         session = Session()
 
-        observations = asos.get_update()
-
+        try:
+            observations = asos.get_update()
+        except RuntimeError:
+            #No valid repsonse from api request
+            print('No valid JSON received from asos.get_update, sleeping 10 min...')
+            sleep(60 * 10)
+            continue
+            
         for station,table in station_tables.items():
             try:
                 try:
@@ -119,7 +125,13 @@ def wl_record(url, DB_URI, alert):
     while True:
         Session = db_init(DB_URI)
         session = Session()
-        observation = Observation(**wl_soup(url))
+
+        try:
+            observation = Observation(**wl_soup(url))
+        except RuntimeError:
+            print('No valid XML received from wl_record, sleeping 5 min...')
+            sleep(60 * 5)
+            continue
         
         time_of_scrape = dt.now().strftime(DATETIME_FORMAT)
         scraped_time = observation.datetime.strftime(DATETIME_FORMAT)
