@@ -138,3 +138,4 @@ alembic
 app_backup/
 wl_scrape/asos_test.py
 *desktop.ini
+config.ini
