@@ -1,17 +1,17 @@
 # config.py
 import os
-
+from app import config
 
 class Config(object):
     DEBUG = False
     TESTING = False
     DATABASE_URI = 'sqlite:///:memory:'
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+    SECRET_KEY = config['WEB']['secret_key'] or 'you-will-never-guess'
 
 
 class ProductionConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.environ['PROD_URI']
+    SQLALCHEMY_DATABASE_URI = config['DATABASE']['prod'] #os.environ['PROD_URI']
 
 
 class DevelopmentConfig(Config):
@@ -19,4 +19,4 @@ class DevelopmentConfig(Config):
     TEMPLATES_AUTO_RELOAD = True
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.environ['DEV_URI']
+    SQLALCHEMY_DATABASE_URI = config['DATABASE']['dev'] #os.environ['DEV_URI']

@@ -3,13 +3,17 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
 import sys
-
+import configparser
 from wsutil.models import Observation
 
 # Initialize the app
 app = Flask(__name__, instance_relative_config=True)
 
-# Load the config file
+#Project Config
+config = configparser.ConfigParser()
+config.read('../config.ini')
+
+# Flask Config
 app.config.from_object('config.DevelopmentConfig')
 
 # Database

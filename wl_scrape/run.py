@@ -5,19 +5,21 @@
     Purpose: Scrape the contents of an api.weather.com xml page to database
 """
 
-from wsutil.sqlalch import db_init
 from WeatherLinkScrape import db_record
 import os
+import configparser
 
-username = os.environ['WS_USER_ID']
-password = os.environ['WS_PASS']
-token = os.environ['WS_TOKEN']
+config = configparser.ConfigParser()
+config.read('../config.ini')
+
+username =  config['WEATHERLINK']['id'] 
+password = config['WEATHERLINK']['password'] 
+token = config['WEATHERLINK']['token'] 
 
 XML_URL = 'https://api.weatherlink.com/v1/NoaaExt.xml?user=' + \
     username + '&pass=' + password + '&apiToken=' + token
 
-# Session = db_init(os.environ['DEV_URI']) 
+alerts = {'sender':config['ALERTS']['sender'],'pass':config['ALERTS']['sender_password'],'receivers':config['ALERTS']['receivers']}
 
-alerts = {'sender':os.environ['ALERT_SENDER'],'pass':os.environ['ALERT_PASS'],'receivers':os.environ['ALERT_RECEIVERS']}
-
-db_record(os.environ['DEV_URI'],XML_URL,alerts) #Change to 'PROD_URI' to use Production Database
+db_record(config['DATABASE']['dev'],XML_URL,alerts)
+#change dev to prod to switch databases 
