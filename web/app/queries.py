@@ -95,8 +95,8 @@ def asrc_records(query):
     results = OrderedDict()
 
     for key in hl_keys:
-        max_obs = max(query.all(),key=attrgetter(key))
-        min_obs = min(query.all(),key=attrgetter(key))
+        max_obs = max([q for q in query.all() if getattr(q,key) is not None],key=attrgetter(key))
+        min_obs = min([q for q in query.all() if getattr(q,key) is not None],key=attrgetter(key))
         results[key] = {'max':[max_obs.datetime,getattr(max_obs,key)], 'min':[min_obs.datetime,getattr(min_obs,key)]}
 
     return(results)

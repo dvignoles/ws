@@ -14,7 +14,7 @@ config = configparser.ConfigParser()
 config.read('../config.ini')
 
 # Flask Config
-app.config.from_object('config.DevelopmentConfig')
+app.config.from_object('config.ProductionConfig')
 
 # Database
 db = SQLAlchemy(app)

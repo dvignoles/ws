@@ -6,7 +6,7 @@ class Config(object):
     DEBUG = False
     TESTING = False
     DATABASE_URI = 'sqlite:///:memory:'
-    SECRET_KEY = config['WEB']['secret_key'] or 'you-will-never-guess'
+    SECRET_KEY = config['WEB']['secret_key']
 
 
 class ProductionConfig(Config):

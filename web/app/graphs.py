@@ -35,7 +35,7 @@ def get_asos_df(session):
 
         columns = [getattr(model,'local_valid'),getattr(model,'tmpf'),getattr(model,'relh'),getattr(model,'sknt'),getattr(model,'mslp')]
         s = select(columns).where(model.local_valid >= start).where(
-        model.local_valid <= end)
+        model.local_valid <= end).order_by(model.local_valid)
         df = pandas.read_sql(s, session.connection(),
                          parse_dates='local_valid')
         dfs[model.__station__] = df

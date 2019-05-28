@@ -10,7 +10,7 @@ import os
 import configparser
 
 config = configparser.ConfigParser()
-config.read('../config.ini')
+config.read('/Users/user/Desktop/DANIEL_VIGNOLES/repos/ws/config.ini')
 
 username =  config['WEATHERLINK']['id'] 
 password = config['WEATHERLINK']['password'] 
