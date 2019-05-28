@@ -29,11 +29,14 @@ FACTORS = [
 
 @app.route('/')
 def index():
+    today = datetime.today().strftime('%A, %b %d')
+    month = datetime.today().strftime('%B %Y')
+
     nyc = nyc_current(db.session)
     asrc_today_avg = asrc_averages(db.session,'day')
     asrc_month_avg = asrc_averages(db.session,'month')
     asrc_recent = asrc_recent_observation(db.session)
-    return render_template("index.html",nyc_current=nyc,asrc_today_avg = asrc_today_avg,asrc_month_avg = asrc_month_avg,asrc_recent=asrc_recent)
+    return render_template("index.html",today=today,month=month,nyc_current=nyc,asrc_today_avg = asrc_today_avg,asrc_month_avg = asrc_month_avg,asrc_recent=asrc_recent)
 
 @app.route('/records')
 def records():

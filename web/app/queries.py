@@ -72,7 +72,7 @@ def asrc_averages(session,period='day'):
         for var in high_low_var:    
             high = session.query(func.max(getattr(Observation,var))).filter(Observation.date == date.today()).scalar()
             low = session.query(func.min(getattr(Observation,var))).filter(Observation.date == date.today()).scalar()
-            avg = session.query(func.avg(getattr(Observation,var))).filter(Observation.date == date.today()).scalar()
+            avg = round(session.query(func.avg(getattr(Observation,var))).filter(Observation.date == date.today()).scalar(),1)
 
             hl_results[var] = {'high':high,'low':low,'avg':avg}
 
@@ -81,7 +81,7 @@ def asrc_averages(session,period='day'):
         for var in high_low_var:    
             high = session.query(func.max(getattr(Observation,var))).filter(func.extract('month',Observation.date) == date.today().month and func.extract('year',Observation.date) == date.today().year).scalar()
             low = session.query(func.min(getattr(Observation,var))).filter(func.extract('month',Observation.date) == date.today().month and func.extract('year',Observation.date) == date.today().year).scalar()
-            avg = session.query(func.avg(getattr(Observation,var))).filter(func.extract('month',Observation.date) == date.today().month and func.extract('year',Observation.date) == date.today().year).scalar()
+            avg = round(session.query(func.avg(getattr(Observation,var))).filter(func.extract('month',Observation.date) == date.today().month and func.extract('year',Observation.date) == date.today().year).scalar(),1)
 
             hl_results[var] = {'high':high,'low':low,'avg':avg}
 

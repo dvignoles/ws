@@ -57,7 +57,7 @@
         <!-- Today Averages -->
         <div class="col-xs-6">
             <div class="panel">
-                <div class="panel-heading"><h2 align="center">Today</h2></div>
+                <div class="panel-heading"><h2 align="center">{{today}}</h2></div>
                 <div class="panel-body"><div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -95,7 +95,7 @@
         <!-- Month Averages -->
         <div class="col-xs-6">
             <div class="panel">
-                <div class="panel-heading"><h2 align="center">Month</h2></div>
+                <div class="panel-heading"><h2 align="center">{{month}}</h2></div>
                 <div class="panel-body"><div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -130,7 +130,7 @@
 
     <!-- Around NYC -->
     <div class="panel">
-        <div class="panel-heading"><h2 align="center">Around NYC</h2></div>
+        <div class="panel-heading"><h2 align="center">Current Conditions Around NYC</h2></div>
         <div class="panel-body"><div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -146,7 +146,7 @@
                     <tbody>
                         {% for key, value in nyc_current.items()%}
                         <tr>
-                            <td>{{key}}</td>
+                            <td><b>{{key}}</b></td>
                             <td>{{value.asrc}}</td>
                             <td>{{value.jfk}}</td>
                             <td>{{value.lga}}</td>
