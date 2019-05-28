@@ -1,300 +1,339 @@
 {% extends "base.html" %}
 {% block title %}Instruments{% endblock %}
 {% block body %}
+
+
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
 
 <head>
-	<title>Instruments</title>
+  <title>Instruments</title>
 </head>
-<body>
-	  <h1>The Instrument Page</h1>
-		  <p class="lead">You can learn more about my instruments here. 
-		  </p>
-		<hr>
-	
-<div class="box-4">	
-			<h2>Pyranometer </h2>
-				<div class="box-4"><p> <img class="border" src="../static/Images/Pyranometer.jpg" alt="Pyranometer" width="200" align="left">
-		  	The pyranometer detects solar radiation at wavelengths of 400nm to 1100nm. It is a type of actinometer which measures solar irridiance, the solar radiation flux density (W/m^2) using a silicon photodiode trasnducer. <br>
-		  	Pyranometer originates from Greek language, meaning "Fire from above". It is used to quantify solar radiation and can be useful for comparing vegetation growth to amount of avaiable sun light, area heating due to radiation absorption, etc.
-		  </p></div>
-		  	<!-- <hr> -->
-<a class="button" href="https://www.davisinstruments.com/product_documents/weather/spec_sheets/6450_SS.pdf">Pyranometer Spec Sheet</a>
-<br>
-<button class="collapsible">General Specifications</button>
-<div class="content">
-                            <div id="main-block2">
-                            <p align="right">Operating Temperature
-                                <br>Transducer
-                                <br>Spectral Response (10% points)
-                                <br>Percent of Reading
-                                <br>Percent of Full Scale
-                                <br>Temperature Coefficient
-                                <br>Reference temperature
-                                <br>Correction per degree above reference temp
-                                <br>Correction per degree below reference temp
-                                <br>Housing Material
-                                <br>Dimensions (Length x Width x Height)
-                                <br>Weight 
-                            </p>
-                            </div>
-                            <div class= "block2">
-                            <p> -40° to +150° F (-40° to +65° C)
-                                <br>Silicon photodiode
-                                <br>400 to 1100 nanometers
-                                <br>±3% (0° to ±70° incident angle); ±10% (±70° to ±85° incident angle)
-                                <br>±2% (0° to ±90°)
-                                <br>+0.067% per °F (+ 0.12% per °C)
-                                <br>77°F (25°C)
-                                <br>-0.067% of reading per °F (-0.12% per °C) 
-                                <br>+0.067% of reading per °F (+0.12% per °C) 
-                                <br>UV-resistant PVC plastic
-                                <br>2.00” x 2.75” x 2.25” (51 mm x 70 mm x 57 mm)
-                                <br>0.5 lbs. (226 g)
-                            </p>
-                            </div>
-</div>
-<button class="collapsible">Sensor Output</button>
-<div class="content">
-                            <div id="main-block2">
-                            <p align="right">Operating Temperature
-                                <br>Transducer
-                                <br>Resolution and Units
-                                <br>Range
-                                <br>Accuracy
-                                <br>Drift
-                                <br>Update Interval
-                            </p>
-                            </div>
-                            <div class= "block2">
-                            <p> -40° to +150° F (-40° to +65° C)
-                                <br>1 W/m2
-                                <br>0 to 1800 W/m2
-                                <br>±5% of full scale (Reference: Eppley PSP at 1000 W/m2) plus 45 W/m2 per 100' (30 m) of additional cable
-                                <br>up to ±2% per year
-                                <br>50 seconds to 1 minute
-                            </p>
-                            </div>
-</div>
-                        <div class="clr"></div>
 
-</div> <!-- End Pyranometer-->
 
-		<div class="box-4">  <!-- Start Radiometer-->
-		  	<h2>Radiometer</h2>
-  		<div class="box-4">	<p> <img class="border" src="../static/Images/UV_Sensor.jpg" alt="UV Sensor" width="200" align="left">
-		  	The radiometer measures the "sunburn" portion of the EM spectrum (290 to 390nm). The spectral response is closely matched to the Erythema Action Spectrum, defined by McKinlay and Diffey (1987) and internationally recognized as the radiation that is most responsible for causing redness of the human skin.
-		  	<br>
-		  	The radiometer is useful for quantifying the amount of harmful radation. Data gathered from this sensor allows for occupants of an area to adequately use sun protection for sunny days. A radiometer is especially useful for monitoring UV radiation in regions where the ozone layer is not as effective, such as the Southern regions of South America.</p>
-	  	</div>
-		  	<a class="button" href="https://www.davisinstruments.com/product_documents/weather/spec_sheets/6490_SS.pdf">Radiation Sensor Spec Sheet</a>	
-<button class="collapsible">General Specifications</button>
-<div class="content">
-                            <div id="main-block2">
-                            <p align="right">Operating Temperature
-                                <br>Transducer
-                                <br>Spectral Response (10% points)
-                                <br>Cosine Response Percent of Reading
-                                <br>Percent of Full Scale
-                                <br>Temperature Coefficient
-                                <br>Reference temperature
-                                <br>Correction per degree above reference temp
-                                <br>Correction per degree below reference temp
-                                <br>Housing Material
-                                <br>Dimensions (Length x Width x Height)
-                                <br>Weight 
-                            </p>
-                            </div>
-                            <div class= "block2">
-                            <p> -40° to +150° F (-40° to +65° C)
-                                <br>Silicon photodiode
-                                <br>400 to 1100 nanometers
-                                <br>±3% (0° to ±70° incident angle); ±10% (±70° to ±85° incident angle)
-                                <br>±2% (0° to ±90°)
-                                <br>+0.067% per °F (+ 0.12% per °C)
-                                <br>77°F (25°C)
-                                <br>-0.067% of reading per °F (-0.12% per °C) 
-                                <br>+0.067% of reading per °F (+0.12% per °C) 
-                                <br>UV-resistant PVC plastic
-                                <br>2.00” x 2.75” x 2.25” (51 mm x 70 mm x 57 mm)
-                                <br>0.5 lbs. (226 g)
-                            </p>
-                            </div>
-</div>
-<button class="collapsible">Sensor Output</button>
-<div class="content">
-                            <div id="main-block2">
-                            <p align="right">Resolution and Units
-                                <br>Range
-                                <br>Accuracy
-                                <br>Drift
-                                <br>Update Interval
-                            </p>
-                            </div>
-                            <div class= "block2">
-                            <p>1 W/m2
-                                <br>0 to 1800 W/m2
-                                <br>±5% of full scale (Reference: Eppley PSP at 1000 W/m2) plus 45 W/m2 per 100' (30 m) of additional cable
-                                <br>up to ±2% per year
-                                <br>50 seconds to 1 minute
-                            </p>
-                            </div>
-						</div>
-					</div><!-- End Radiometer-->
+  <h1>The Instrument Page</h1>
+  <p class="lead">You can learn more about my instruments here.
+  </p>
+  <hr>
 
-		<div class="box-maxImg"> 
-			<h2>Electromagnetic Spectrum</h2>
-	  	<img src="../static/Images/EMspec.jpg" alt="Electromagnetic Spectum"> 
-		</div>
-
-<div class="box-4"> 
-  	<h2>Anemometer and Wind Vane</h2>
-  	<div class="box-4">	<p> <img class="border" src="../static/Images/Anem_Wind_Vane.jpg" alt="UAnemometer and Wind Vane" width="200" align="left">
-  	Wind Vane and anemometer
-  	The wind vane and anemometer are paired together as one unit. Mounted above the integrated sensor suite (ISS). The wind vane indicates the direction which the wind blows. The anemometer measures wind speed. The combination of these two sensors allow for rose plots of wind direction and speed, plots of transient wind speed as well as visualizing wind gusts during a storm.</p>
-  	</div>
-<a class="button" href="https://www.davisinstruments.com/product_documents/weather/spec_sheets/6410_SS.pdf">Anemometer and Wind Vane Spec Sheet</a>
-<button class="collapsible">Sensor Type</button>
-<div class="content">
-       <div id="main-block2">
-          <p align="right">Operating Temperature
-                <br>Wind Speed
-                <br>Wind Direction
-                <br>Display Resolution
-                <br>Percent of Full Scale
-                <br>Wind Vane Accuracy
-                <br>Resolution & Units
-                <br>Range
-                <br>Anemometer Accuracy
-           </p>
-       </div>
-       <div class= "block2">
-         <p> -40° to +149° F (-40° to +65° C)
-                <br>Solid state magnetic sensor 
-                <br>Wind vane and potentiometer 
-                <br>16 points (22.5°) on compass rose, 1° in numeric display 
-                <br> ±3°Wind Speed 
-                <br>Measured in 1 mph. Other units are converted from mph and rounded to nearest 1 km/h, 0.1 m/s, or 1 knot 
-                <br>1 to 200 mph, 1 to 173 knots, 0.5 to 89 m/s, 1 to 322 km/h 
-                <br>±2 mph (2 kts, 3 km/h, 1 m/s) or ±5%, whichever is greater 
+  <div class="box-4">
+    <h2>Pyranometer </h2>
+    <div class="box-4">
+      <p> <img class="border" src="../static/Images/Pyranometer.jpg" alt="Pyranometer" width="200" align="left">
+        The pyranometer detects solar radiation at wavelengths of 400nm to 1100nm. It is a type of actinometer which
+        measures solar irridiance, the solar radiation flux density (W/m^2) using a silicon photodiode trasnducer. <br>
+        Pyranometer originates from Greek language, meaning "Fire from above". It is used to quantify solar radiation
+        and can be useful for comparing vegetation growth to amount of avaiable sun light, area heating due to radiation
+        absorption, etc.
+      </p>
+    </div>
+    <!-- <hr> -->
+    <a class="button"
+      href="https://www.davisinstruments.com/product_documents/weather/spec_sheets/6450_SS.pdf">Pyranometer Spec
+      Sheet</a>
+    <br>
+    <button class="collapsible">General Specifications</button>
+    <div class="content">
+      <div id="main-block2">
+        <p align="right">Operating Temperature
+          <br>Transducer
+          <br>Spectral Response (10% points)
+          <br>Percent of Reading
+          <br>Percent of Full Scale
+          <br>Temperature Coefficient
+          <br>Reference temperature
+          <br>Correction per degree above reference temp
+          <br>Correction per degree below reference temp
+          <br>Housing Material
+          <br>Dimensions (Length x Width x Height)
+          <br>Weight
         </p>
-       </div>
-</div>
-</div> <!--End Anemometer And Wind Vane-->
-
-<div class="box-4"> 
-  	<h2>Temperature and Humidity Sensor</h2>
-  	<div class="box-4">	<p> <img class="border" src="../static/Images/Temp_hum.jpg" alt="Temperature and Humidity Sensor" width="200" align="left">
-  	The temperature and humidity sensor of the Vantage Pro+ 2 comes in one unit. The termperature sensor is a platinum wire thermistor and humidity sensor uses a film capacitor element. A thermistor experiences a change in electrical resistance during temperature change. This change in resistance can be detected and converted to temperature. The humidity sensor uses a thin strip of metal oxide between two electrodes, the metal oxide experiences a change in electrical resitance as moisture levels increase. The measurement is relative and linear and will go from 0% to 100%. </p>
-  	</div>
-  	<a class="button" href="https://www.davisinstruments.com/product_documents/weather/spec_sheets/7859_spec_Rev_D.pdf">Temperature and Humidity Spec Sheet</a>
-<button class="collapsible">General Specifications</button>
-<div class="content">
-       <div id="main-block2">
-          <p align="right">Temperature
-                <br>Relative Humidity 
-                <br>Housing Material
-                <br>Dimensions
-                <br>Weight
-           </p>
-       </div>
-       <div class= "block2">
-         <p> Platinum wire thermistor 
-                <br>Film capacitor element 
-                <br>White ABS with UV Inhibitor added
-                <br>3.5" wide x 3.25" long x 1.5" high (89 mm x 83 mm x 38 mm) 
-                <br> 15 oz. (425 g)
+      </div>
+      <div class="block2">
+        <p> -40° to +150° F (-40° to +65° C)
+          <br>Silicon photodiode
+          <br>400 to 1100 nanometers
+          <br>±3% (0° to ±70° incident angle); ±10% (±70° to ±85° incident angle)
+          <br>±2% (0° to ±90°)
+          <br>+0.067% per °F (+ 0.12% per °C)
+          <br>77°F (25°C)
+          <br>-0.067% of reading per °F (-0.12% per °C)
+          <br>+0.067% of reading per °F (+0.12% per °C)
+          <br>UV-resistant PVC plastic
+          <br>2.00” x 2.75” x 2.25” (51 mm x 70 mm x 57 mm)
+          <br>0.5 lbs. (226 g)
         </p>
-       </div>
-</div>
-<button class="collapsible">Sensor Output</button>
-<div class="content">
-       <div id="main-block2">
-          <p align="right">Temperature Range
-                <br>Relative Humidity 
-                <br>Dew Point
-                <br>Temperature Accuracy
-                <br>Relative Humidity Accuracy
-                <br>Dew point Accuracy
-                <br>Temperature Resolution
-                <br>Relative Humidity Accuracy
-                <br>Dew Point Accuracy
-                <br>Temperature Update Interval
-                <br>Relative Humidity Update Interval
-           </p>
-       </div>
-       <div class= "block2">
-         <p> -50° to 140° F (-45° to 60° C) 
-                <br>0-100% 
-                <br>-99° to 140° F (-73° to 60° C) 
-                <br>±1°F (±0.5°C) 
-                <br>±3%, from 0 to 90% RH, ±4% from 90% to 100% RH 
-                <br>±4°F (±2°C) 
-                <br>1.0° or 0.1°, selectable, F or C 
-                <br>1% 
-                <br>1°F (1°C) 
-                <br>16 seconds (max) 
-                <br>16 seconds (max) 
+      </div>
+    </div>
+    <button class="collapsible">Sensor Output</button>
+    <div class="content">
+      <div id="main-block2">
+        <p align="right">Operating Temperature
+          <br>Transducer
+          <br>Resolution and Units
+          <br>Range
+          <br>Accuracy
+          <br>Drift
+          <br>Update Interval
         </p>
-       </div>  	
-</div>
-</div> <!--End Temp & Hum Sensor-->
+      </div>
+      <div class="block2">
+        <p> -40° to +150° F (-40° to +65° C)
+          <br>1 W/m2
+          <br>0 to 1800 W/m2
+          <br>±5% of full scale (Reference: Eppley PSP at 1000 W/m2) plus 45 W/m2 per 100' (30 m) of additional cable
+          <br>up to ±2% per year
+          <br>50 seconds to 1 minute
+        </p>
+      </div>
+    </div>
+    <div class="clr"></div>
 
-<div class="box-4"> 
-  	<h2>Rain Collector</h2>
-  	<div class="box-4">	<p> <img class="border" src="../static/Images/Tipping_Buckets.jpg" alt="Tipping  Bucket" width="200" align="left">
-  	The rain collector unit measures rainfall using a tipping bucket. For the use of the ASRC weather station, the tipping bucket used is the metric version as it has greater precision due to its smaller container size increased frequency of measurement. 
-  	</p>
+  </div> <!-- End Pyranometer-->
+
+  <div class="box-4">
+    <!-- Start Radiometer-->
+    <h2>Radiometer</h2>
+    <div class="box-4">
+      <p> <img class="border" src="../static/Images/UV_Sensor.jpg" alt="UV Sensor" width="200" align="left">
+        The radiometer measures the "sunburn" portion of the EM spectrum (290 to 390nm). The spectral response is
+        closely matched to the Erythema Action Spectrum, defined by McKinlay and Diffey (1987) and internationally
+        recognized as the radiation that is most responsible for causing redness of the human skin.
+        <br>
+        The radiometer is useful for quantifying the amount of harmful radation. Data gathered from this sensor allows
+        for occupants of an area to adequately use sun protection for sunny days. A radiometer is especially useful for
+        monitoring UV radiation in regions where the ozone layer is not as effective, such as the Southern regions of
+        South America.</p>
+    </div>
+    <a class="button"
+      href="https://www.davisinstruments.com/product_documents/weather/spec_sheets/6490_SS.pdf">Radiation Sensor Spec
+      Sheet</a>
+    <button class="collapsible">General Specifications</button>
+    <div class="content">
+      <div id="main-block2">
+        <p align="right">Operating Temperature
+          <br>Transducer
+          <br>Spectral Response (10% points)
+          <br>Cosine Response Percent of Reading
+          <br>Percent of Full Scale
+          <br>Temperature Coefficient
+          <br>Reference temperature
+          <br>Correction per degree above reference temp
+          <br>Correction per degree below reference temp
+          <br>Housing Material
+          <br>Dimensions (Length x Width x Height)
+          <br>Weight
+        </p>
+      </div>
+      <div class="block2">
+        <p> -40° to +150° F (-40° to +65° C)
+          <br>Silicon photodiode
+          <br>400 to 1100 nanometers
+          <br>±3% (0° to ±70° incident angle); ±10% (±70° to ±85° incident angle)
+          <br>±2% (0° to ±90°)
+          <br>+0.067% per °F (+ 0.12% per °C)
+          <br>77°F (25°C)
+          <br>-0.067% of reading per °F (-0.12% per °C)
+          <br>+0.067% of reading per °F (+0.12% per °C)
+          <br>UV-resistant PVC plastic
+          <br>2.00” x 2.75” x 2.25” (51 mm x 70 mm x 57 mm)
+          <br>0.5 lbs. (226 g)
+        </p>
+      </div>
+    </div>
+    <button class="collapsible">Sensor Output</button>
+    <div class="content">
+      <div id="main-block2">
+        <p align="right">Resolution and Units
+          <br>Range
+          <br>Accuracy
+          <br>Drift
+          <br>Update Interval
+        </p>
+      </div>
+      <div class="block2">
+        <p>1 W/m2
+          <br>0 to 1800 W/m2
+          <br>±5% of full scale (Reference: Eppley PSP at 1000 W/m2) plus 45 W/m2 per 100' (30 m) of additional cable
+          <br>up to ±2% per year
+          <br>50 seconds to 1 minute
+        </p>
+      </div>
+    </div>
+  </div><!-- End Radiometer-->
+
+  <div class="box-maxImg">
+    <h2>Electromagnetic Spectrum</h2>
+    <img src="../static/Images/EMspec.jpg" alt="Electromagnetic Spectum">
   </div>
-  	<a class="button" href="https://www.davisinstruments.com/product_documents/weather/spec_sheets/7857-7852_SS.pdf">Rain Collector Spec Sheet</a>
-<button class="collapsible">Sensor Output</button>
-<div class="content">
-       <div id="main-block2">
-          <p align="right">Sensor Type
-                <br>Accuracy
-           </p>
-       </div>
-       <div class= "block2">
-         <p>Tipping bucket with magnetic switch 
-                <br>For rain rates up to 4"/hr (100 mm/hr): ±4% of total or ± 1 tip of the bucket (0.01"/0.2 mm), whichever is greater 
+
+  <div class="box-4">
+    <h2>Anemometer and Wind Vane</h2>
+    <div class="box-4">
+      <p> <img class="border" src="../static/Images/Anem_Wind_Vane.jpg" alt="UAnemometer and Wind Vane" width="200"
+          align="left">
+        Wind Vane and anemometer
+        The wind vane and anemometer are paired together as one unit. Mounted above the integrated sensor suite (ISS).
+        The wind vane indicates the direction which the wind blows. The anemometer measures wind speed. The combination
+        of these two sensors allow for rose plots of wind direction and speed, plots of transient wind speed as well as
+        visualizing wind gusts during a storm.</p>
+    </div>
+    <a class="button"
+      href="https://www.davisinstruments.com/product_documents/weather/spec_sheets/6410_SS.pdf">Anemometer and Wind Vane
+      Spec Sheet</a>
+    <button class="collapsible">Sensor Type</button>
+    <div class="content">
+      <div id="main-block2">
+        <p align="right">Operating Temperature
+          <br>Wind Speed
+          <br>Wind Direction
+          <br>Display Resolution
+          <br>Percent of Full Scale
+          <br>Wind Vane Accuracy
+          <br>Resolution & Units
+          <br>Range
+          <br>Anemometer Accuracy
         </p>
-       </div>  	
-</div>
+      </div>
+      <div class="block2">
+        <p> -40° to +149° F (-40° to +65° C)
+          <br>Solid state magnetic sensor
+          <br>Wind vane and potentiometer
+          <br>16 points (22.5°) on compass rose, 1° in numeric display
+          <br> ±3°Wind Speed
+          <br>Measured in 1 mph. Other units are converted from mph and rounded to nearest 1 km/h, 0.1 m/s, or 1 knot
+          <br>1 to 200 mph, 1 to 173 knots, 0.5 to 89 m/s, 1 to 322 km/h
+          <br>±2 mph (2 kts, 3 km/h, 1 m/s) or ±5%, whichever is greater
+        </p>
+      </div>
+    </div>
+  </div>
+  <!--End Anemometer And Wind Vane-->
 
-</div> <!-- End Rain Collector-->
+  <div class="box-4">
+    <h2>Temperature and Humidity Sensor</h2>
+    <div class="box-4">
+      <p> <img class="border" src="../static/Images/Temp_hum.jpg" alt="Temperature and Humidity Sensor" width="200"
+          align="left">
+        The temperature and humidity sensor of the Vantage Pro+ 2 comes in one unit. The termperature sensor is a
+        platinum wire thermistor and humidity sensor uses a film capacitor element. A thermistor experiences a change in
+        electrical resistance during temperature change. This change in resistance can be detected and converted to
+        temperature. The humidity sensor uses a thin strip of metal oxide between two electrodes, the metal oxide
+        experiences a change in electrical resitance as moisture levels increase. The measurement is relative and linear
+        and will go from 0% to 100%. </p>
+    </div>
+    <a class="button"
+      href="https://www.davisinstruments.com/product_documents/weather/spec_sheets/7859_spec_Rev_D.pdf">Temperature and
+      Humidity Spec Sheet</a>
+    <button class="collapsible">General Specifications</button>
+    <div class="content">
+      <div id="main-block2">
+        <p align="right">Temperature
+          <br>Relative Humidity
+          <br>Housing Material
+          <br>Dimensions
+          <br>Weight
+        </p>
+      </div>
+      <div class="block2">
+        <p> Platinum wire thermistor
+          <br>Film capacitor element
+          <br>White ABS with UV Inhibitor added
+          <br>3.5" wide x 3.25" long x 1.5" high (89 mm x 83 mm x 38 mm)
+          <br> 15 oz. (425 g)
+        </p>
+      </div>
+    </div>
+    <button class="collapsible">Sensor Output</button>
+    <div class="content">
+      <div id="main-block2">
+        <p align="right">Temperature Range
+          <br>Relative Humidity
+          <br>Dew Point
+          <br>Temperature Accuracy
+          <br>Relative Humidity Accuracy
+          <br>Dew point Accuracy
+          <br>Temperature Resolution
+          <br>Relative Humidity Accuracy
+          <br>Dew Point Accuracy
+          <br>Temperature Update Interval
+          <br>Relative Humidity Update Interval
+        </p>
+      </div>
+      <div class="block2">
+        <p> -50° to 140° F (-45° to 60° C)
+          <br>0-100%
+          <br>-99° to 140° F (-73° to 60° C)
+          <br>±1°F (±0.5°C)
+          <br>±3%, from 0 to 90% RH, ±4% from 90% to 100% RH
+          <br>±4°F (±2°C)
+          <br>1.0° or 0.1°, selectable, F or C
+          <br>1%
+          <br>1°F (1°C)
+          <br>16 seconds (max)
+          <br>16 seconds (max)
+        </p>
+      </div>
+    </div>
+  </div>
+  <!--End Temp & Hum Sensor-->
 
-	   <nav> 
-          <ul class="fix-me button">
-          	<p> Navigation </p> <hr>
-            <li><a href="{{ url_for('index') }}">Pyranometer</a></li>
-            <li><a href="{{ url_for('about') }}">Radiometer</a></li>
-            <li><a href="{{ url_for('instruments') }}">EM Spectrum</a></li>
-            <li><a href="{{ url_for('test') }}">Anemometer <br> & Wind Vane</a></li>
-            <li><a href="{{ url_for('test') }}">Temperature & <br>Humidity Sensor</a></li>
-            <li><a href="{{ url_for('test') }}">Rain Collector</a></li>
-          </ul>
-        </nav>
+  <div class="box-4">
+    <h2>Rain Collector</h2>
+    <div class="box-4">
+      <p> <img class="border" src="../static/Images/Tipping_Buckets.jpg" alt="Tipping  Bucket" width="200" align="left">
+        The rain collector unit measures rainfall using a tipping bucket. For the use of the ASRC weather station, the
+        tipping bucket used is the metric version as it has greater precision due to its smaller container size
+        increased frequency of measurement.
+      </p>
+    </div>
+    <a class="button"
+      href="https://www.davisinstruments.com/product_documents/weather/spec_sheets/7857-7852_SS.pdf">Rain Collector Spec
+      Sheet</a>
+    <button class="collapsible">Sensor Output</button>
+    <div class="content">
+      <div id="main-block2">
+        <p align="right">Sensor Type
+          <br>Accuracy
+        </p>
+      </div>
+      <div class="block2">
+        <p>Tipping bucket with magnetic switch
+          <br>For rain rates up to 4"/hr (100 mm/hr): ±4% of total or ± 1 tip of the bucket (0.01"/0.2 mm), whichever is
+          greater
+        </p>
+      </div>
+    </div>
 
-</body>
+  </div> <!-- End Rain Collector-->
 
+  <nav>
+    <ul class="fix-me button">
+      <p> Navigation </p>
+      <hr>
+      <li><a href="{{ url_for('index') }}">Pyranometer</a></li>
+      <li><a href="{{ url_for('about') }}">Radiometer</a></li>
+      <li><a href="{{ url_for('instruments') }}">EM Spectrum</a></li>
+
+    </ul>
+  </nav>
 </html>
 
 <script>
-var coll = document.getElementsByClassName("collapsible");
-var i;
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
 
-for (i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.maxHeight){
-      content.style.maxHeight = null;
-    } else {
-      content.style.maxHeight = content.scrollHeight + "px";
-    } 
-  });
-}
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.maxHeight) {
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      }
+    });
+  }
 </script>
 {% endblock %}
