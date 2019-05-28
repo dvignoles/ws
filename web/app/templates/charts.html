@@ -8,54 +8,47 @@
 </head>
 
 <body>
-  <div>
-    <h1>Charts</h1>
-    <p class="lead">Visual Presentation of Climate Data for New York City </p>
-    <hr>
+    
+<div class="panel" align="center">
+
+  <div class="panel-heading"><h2>Past 7 days around NYC</h2></div>
+
+  <div class="panel-body">
+      <div id="temp" class="chart"></div>
+      <div id="humidity" class="chart"></div>
+      <div id="wind" class="chart"></div>
+      <div id="pressure" class="chart"></div>
   </div>
+   
 
-  <div class="box-4">
-    <div class="row">
-      <div class="col-xs-6">
-        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width='600' alt="Line Graph Place Holder" align="middle">
-        <p align="middle"> Courtesy of the National Weather Service</p>
+</div>
 
-      </div>
-      <div class="col-xs-6">
-        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width='600' alt="Line Graph Place Holder" align="middle">
-        <p align="middle"> Courtesy of the National Weather Service</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-6">
-        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width='600' alt="Line Graph Place Holder" align="middle">
-        <p align="middle"> Courtesy of the National Weather Service</p>
-
-      </div>
-      <div class="col-xs-6">
-        <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" width='600' alt="Line Graph Place Holder" align="middle">
-        <p align="middle"> Courtesy of the National Weather Service</p>
-      </div>
-    </div>
-    <a class="button" href="">Today</a>
-    <a class="button" href="">Week</a>
-    <a class="button" href="">Month</a>
-    <a class="button" href="">Year</a>
-    <br>
-    <br>
-    <label class="checkbox-inline">
-      <input type="checkbox" value="">ASRC</label>
-    <label class="checkbox-inline">
-      <input type="checkbox" value="">NYC</label>
-    <label class="checkbox-inline">
-      <input type="checkbox" value="">LGA</label>
-    <label class="checkbox-inline">
-      <input type="checkbox" value="">JFK</label>
-    <label class="checkbox-inline">
-      <input type="checkbox" value="">JRB</label>
-  </div>
+    
 </body>
 
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script type="text/javascript">
+  var graphs = {{temp_plot | safe}};
+  Plotly.plot('temp',graphs,{});
+</script>
+
+<script type="text/javascript">
+  var graphs = {{humidity_plot | safe}};
+  Plotly.plot('humidity',graphs,{});
+</script>
+
+<script type="text/javascript">
+  var graphs = {{wind_plot | safe}};
+  Plotly.plot('wind',graphs,{});
+</script>
+
+<script type="text/javascript">
+  var graphs = {{pressure_plot | safe}};
+  Plotly.plot('pressure',graphs,{});
+</script>
 
 </html>
 {% endblock %}

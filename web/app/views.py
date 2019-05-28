@@ -5,6 +5,7 @@ from flask import render_template
 from app import app, db
 
 from app.queries import *
+from app.graphs import *
 
 from collections import OrderedDict
 
@@ -48,7 +49,14 @@ def records():
 
 @app.route('/charts')
 def charts():
-    return render_template("charts.html")
+    asrc_df = get_asrc_df(db.session)
+    asos_dfs = get_asos_df(db.session)
+
+    temp_plot = plot_temp(asrc_df,asos_dfs)
+    humidity_plot = plot_humidity(asrc_df,asos_dfs)
+    wind_plot = plot_wind(asrc_df,asos_dfs)
+    pressure_plot = plot_pressure(asrc_df,asos_dfs)
+    return render_template("charts.html",temp_plot=temp_plot,humidity_plot=humidity_plot,wind_plot=wind_plot,pressure_plot=pressure_plot)
 
 @app.route('/about')
 def about():
