@@ -2,6 +2,7 @@ from wsutil.models import Observation,Asos_Jfk,Asos_Jrb,Asos_Lga,Asos_Nyc
 from sqlalchemy import desc,func
 from collections import OrderedDict
 from datetime import datetime,date,time
+from operator import attrgetter
 
 ASRC_DATA_VAR = ['time', 'temp_f', 'dewpoint_f','heat_index_f', 
    'pressure_mb', 'rain_day_in','rain_rate_in_per_hr','relative_humidity', 'solar_radiation', 'uv_index',
@@ -32,6 +33,9 @@ def dict_from_row(row,keep_keys=None,abbrev_dic = None):
 
     return record
 
+def asrc_all(session):
+    return session.query(Observation)
+
 def asrc_current(session):
     """Return a query from most recent observation"""
     q = session.query(Observation)[-1]
@@ -46,6 +50,11 @@ def asrc_today(session):
     today = datetime.today().date()
     q = session.query(Observation).filter(Observation.date == today)
     return q
+
+def asrc_date_range(session,start,end):
+    q = session.query(Observation).filter(Observation.datetime >= start,Observation.datetime <= end)
+    return q
+
 
 def asrc_averages(session,period='day'):
 
@@ -78,22 +87,19 @@ def asrc_averages(session,period='day'):
 
         return {'hl':hl_results}
 
+def asrc_records(query):
+    '''retrieve high/low of keys in query'''
+    hl_keys = ['temp_f', 'dewpoint_f','heat_index_f', 'pressure_mb', 'rain_day_in','rain_rate_in_per_hr',
+    'relative_humidity', 'solar_radiation', 'uv_index','wind_kt', 'windchill_f']
 
-def asrc_alltime(session,keys):
-    """Return First and Last values for sorted key in keys"""
-    all_time = OrderedDict()
+    results = OrderedDict()
 
-    for key in keys:
-        q = session.query(Observation).order_by(key).all()
+    for key in hl_keys:
+        max_obs = max(query.all(),key=attrgetter(key))
+        min_obs = min(query.all(),key=attrgetter(key))
+        results[key] = {'max':[max_obs.datetime,getattr(max_obs,key)], 'min':[min_obs.datetime,getattr(min_obs,key)]}
 
-        low = {'val': getattr(q[0], key), 'date': q[0].date.isoformat(
-        ), 'time': q[0].time.isoformat()}
-        high = {'val': getattr(
-            q[-1], key), 'date': q[-1].date.isoformat(), 'time': q[-1].time.isoformat()}
-
-        all_time[key] = {'low': low, 'high': high,
-                         'units': get_units(Observation, key)}
-    return(all_time)
+    return(results)
 
 
 def asrc_get_record(session,datetime):

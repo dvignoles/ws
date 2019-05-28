@@ -34,13 +34,21 @@ def index():
     asrc_recent = asrc_recent_observation(db.session)
     return render_template("index.html",nyc_current=nyc,asrc_today_avg = asrc_today_avg,asrc_month_avg = asrc_month_avg,asrc_recent=asrc_recent)
 
-@app.route('/Records')
-def Records():
-    return render_template("Records.html")
+@app.route('/records')
+def records():
+    start_this_year= datetime(datetime.today().year,1,1)
+    end_this_year= datetime(datetime.today().year,12,31)
 
-@app.route('/Charts')
-def Charts():
-    return render_template("Charts.html")
+    year_records = asrc_records(asrc_date_range(db.session,start_this_year,end_this_year))
+    alltime_records = asrc_records(asrc_all(db.session))
+
+    today = datetime.today()
+
+    return render_template("records.html",today=today,year_records=year_records,alltime_records=alltime_records)
+
+@app.route('/charts')
+def charts():
+    return render_template("charts.html")
 
 @app.route('/about')
 def about():
@@ -50,20 +58,3 @@ def about():
 @app.route('/instruments')
 def instruments():
     return render_template("instruments.html")
-
-
-@app.route('/test')
-def test():
-    asrc_all_time = asrc_alltime(db.session,keys=SCALARS)
-
-    asrc_now = asrc_current(db.session)
-
-    asos_now = asos_current(db.session,['jfk','lga','jrb','nyc'])
-
-    #nyc = nyc_current(db.session)
-
-    # asos_within_drange = asos_drange(['lga','jfk','jrb','nyc'],datetime(2019,4,25,0),datetime(2019,4,25,23,59))
-
-    # asos_now = asos_current(['jfk','lga','jrb','nyc'])
-
-    return render_template("test.html", asrc_all_time=asrc_all_time, asrc_current=asrc_now)
