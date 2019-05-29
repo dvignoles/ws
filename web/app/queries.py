@@ -8,10 +8,10 @@ ASRC_DATA_VAR = ['time', 'temp_f', 'dewpoint_f','heat_index_f',
    'pressure_mb', 'rain_day_in','rain_rate_in_per_hr','relative_humidity', 'solar_radiation', 'uv_index',
    'wind_degrees', 'wind_dir', 'wind_kt', 'windchill_f']
 
-ASRC_DATA_VAR_ABBREV = {'time':'time' , 'temp_f':'temp_f', 'dewpoint_f':'dwp_f','heat_index_f':'heat_ind', 
-   'pressure_mb':'press_mb', 'rain_day_in':'rain_day','rain_rate_in_per_hr':'rain_per_hr','relative_humidity':'rel_h',
-    'solar_radiation':'solar_rad', 'uv_index':'uv_ind',
-   'wind_degrees':'wind_deg', 'wind_dir':'wind_dir', 'wind_kt':'wind_kt', 'windchill_f':'windchill_f'}
+ASRC_DATA_VAR_ABBREV = {'time':'time' , 'datetime':'update time','temp_f':'temp (F)', 'dewpoint_f':'dewpoint (F)','heat_index_f':'heat index (F)',
+   'pressure_mb':'pressure (mb)', 'rain_day_in':'rain today (in)','rain_rate_in_per_hr':'rain (in/hr)','relative_humidity':'humidity (%)',
+    'solar_radiation':'solar rad (W/m^2)', 'uv_index':'uv index',
+   'wind_degrees':'wind (deg)', 'wind_dir':'wind (dir)', 'wind_kt':'wind (kt)', 'windchill_f':'windchill (F)'}
 
 #coversion for analagous asrc/asos variables
 asrc_asos = {'datetime':'local_valid','temp_f':'tmpf','dewpoint_f':'dwpf',
@@ -74,7 +74,7 @@ def asrc_averages(session,period='day'):
             low = session.query(func.min(getattr(Observation,var))).filter(Observation.date == date.today()).scalar()
             avg = round(session.query(func.avg(getattr(Observation,var))).filter(Observation.date == date.today()).scalar(),1)
 
-            hl_results[var] = {'high':high,'low':low,'avg':avg}
+            hl_results[ASRC_DATA_VAR_ABBREV[var]] = {'high':high,'low':low,'avg':avg}
 
         return {'hl':hl_results}
     elif period == 'month':
@@ -83,7 +83,7 @@ def asrc_averages(session,period='day'):
             low = session.query(func.min(getattr(Observation,var))).filter(func.extract('month',Observation.date) == date.today().month and func.extract('year',Observation.date) == date.today().year).scalar()
             avg = round(session.query(func.avg(getattr(Observation,var))).filter(func.extract('month',Observation.date) == date.today().month and func.extract('year',Observation.date) == date.today().year).scalar(),1)
 
-            hl_results[var] = {'high':high,'low':low,'avg':avg}
+            hl_results[ASRC_DATA_VAR_ABBREV[var]]= {'high':high,'low':low,'avg':avg}
 
         return {'hl':hl_results}
 
@@ -158,7 +158,7 @@ def asos_current(session,stations=['jfk','lga','nyc','jrb'],keys=None):
     station_observations = {}
     for station in stations:
         table = choose_station(station)
-        station_observations[table.__station__] = session.query(table)[-1]
+        station_observations[table.__station__] = session.query(table).order_by(table.local_valid)[-1]
     return station_observations
 
 def nyc_current(session):
@@ -172,7 +172,7 @@ def nyc_current(session):
 
     results = {}
     for asrc,asos in asrc_asos.items():
-        key = asrc
+        key = ASRC_DATA_VAR_ABBREV[asrc]
         if key == 'datetime':
             key ='update_time'
         results[key] = {'asrc':asrc_now[asrc],'jfk':asos_now['jfk'][asos],'lga':asos_now['lga'][asos],'jrb':asos_now['jrb'][asos],'nyc':asos_now['nyc'][asos]}

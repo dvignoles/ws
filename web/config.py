@@ -7,6 +7,7 @@ class Config(object):
     TESTING = False
     DATABASE_URI = 'sqlite:///:memory:'
     SECRET_KEY = config['WEB']['secret_key']
+    TEMPLATES_AUTO_RELOAD = True
 
 
 class ProductionConfig(Config):
@@ -16,7 +17,5 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    TEMPLATES_AUTO_RELOAD = True
-
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = config['DATABASE']['dev'] #os.environ['DEV_URI']
