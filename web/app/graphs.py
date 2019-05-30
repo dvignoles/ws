@@ -11,6 +11,12 @@ asrc_keys = ['temp_f','pressure_mb', 'rain_day_in', 'rain_rate_in_per_hr',
              'relative_humidity', 'wind_kt']
 
 asos_keys = ['local_valid']
+
+
+def fix_utc(t):
+    '''Bandaid fix for fixing timezone issue with Observation'''
+    return t + timedelta(hours=-4)
+
 def get_asrc_df(session):
     d = timedelta(days=-7)
     end = datetime.now()
@@ -23,6 +29,10 @@ def get_asrc_df(session):
         Observation.datetime <= end)
     df = pandas.read_sql(s, session.connection(),
                          parse_dates='datetime')
+
+    #TEMPORARY FIX FOR TIMEZONE ISSUES WITH POSTGRESQL
+    #NOTE: Should revise schema to better reflect timezone at some point
+    df.datetime = df.datetime.apply(fix_utc)
 
     return df
 

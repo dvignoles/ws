@@ -58,7 +58,7 @@
     <div class="row">
 
         <!-- Today Averages -->
-        <div class="col-xs-6">
+        <div class="col-md-6">
             <div class="panel">
                 <div class="panel-heading"><h2 align="center">{{today}}</h2></div>
                 <div class="panel-body"><div class="table-responsive">
@@ -96,7 +96,7 @@
         </div>
 
         <!-- Month Averages -->
-        <div class="col-xs-6">
+        <div class="col-md-6">
             <div class="panel">
                 <div class="panel-heading"><h2 align="center">{{month}}</h2></div>
                 <div class="panel-body"><div class="table-responsive">
@@ -132,9 +132,25 @@
 
 
     <!-- Around NYC -->
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div style="text-align: center;">
+            <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+              NYC Weather Station Map
+            </button>
+            </div>
+            <div class="collapse" id="collapseExample">
+              <div class="well">
+                <img src="../static/Images/nyc_stations.jpeg" class="img-responsive" alt="Responsive image">
+              </div>
+            </div>
+
+        </div>
+    </div>
+
     <div class="panel">
-        <div class="panel-heading"><h2 align="center">Around NYC</h2></div>
-        <div class="panel-body"><div class="table-responsive">
+    <div class="panel-heading"><h2 align="center">Around NYC</h2></div>
+       <div class="panel-body"><div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -167,7 +183,7 @@
 
     <!-- Radar / Sat -->
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-md-6">
             <div class="well">
                 <h2 align="center"><a href="https://radar.weather.gov/radar.php?rid=okx" target="_blank">Radar</a></h2>
                 <img src="https://radar.weather.gov/ridge/lite/N0R/OKX_loop.gif" class="img-responsive">
@@ -175,7 +191,7 @@
             </div>
         </div>
 
-        <div class="col-xs-6">
+        <div class="col-md-6">
             <div class="well">
                 <h2 align="center"><a href="https://www.nesdis.noaa.gov/content/imagery-and-data" target="_blank">GOES-East Satellite</a></h2>
                 <img src="https://cdn.star.nesdis.noaa.gov/GOES16/ABI/GIFS/GOES16-NE-GEOCOLOR-600x600.gif" class="img-responsive" align="middle">

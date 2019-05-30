@@ -8,7 +8,7 @@ Base = declarative_base()
 class Observation(Base):
     __tablename__ = 'observation'
 
-    datetime = Column('datetime', DateTime(), unique=True, primary_key=True)
+    datetime = Column('datetime', DateTime(timezone=True), unique=True, primary_key=True)
     station_name = Column('station_name', String(255), unique=False)
     location = Column('location', String(255), unique=False)
     latitude = Column('latitude', Float(), unique=False)

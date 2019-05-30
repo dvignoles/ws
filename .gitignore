@@ -129,6 +129,7 @@ settings.json
 
 #MAC
 .DS_Store
+.idea/
 
 #Alembic
 alembic.ini
@@ -139,3 +140,4 @@ app_backup/
 wl_scrape/asos_test.py
 *desktop.ini
 config.ini
+queries_test.py
