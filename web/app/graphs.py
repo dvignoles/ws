@@ -5,6 +5,7 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import json
 from datetime import datetime,timedelta
+from dateutil import tz
 from wsutil.models import Observation,Asos_Jfk,Asos_Jrb,Asos_Lga,Asos_Nyc
 
 asrc_keys = ['temp_f','pressure_mb', 'rain_day_in', 'rain_rate_in_per_hr',
@@ -17,9 +18,15 @@ def fix_utc(t):
     '''Bandaid fix for fixing timezone issue with Observation'''
     return t + timedelta(hours=-4)
 
+def get_now():
+    '''current time in local EST'''
+    tzlocal = tz.tzoffset('EST', -14400)
+    utcnow = datetime.utcnow().replace(tzinfo=tz.tzutc())
+    return utcnow.astimezone(tzlocal)
+
 def get_asrc_df(session):
     d = timedelta(days=-7)
-    end = datetime.now()
+    end = get_now()
     start = end + d
 
     columns = [Observation.datetime, Observation.temp_f,
@@ -40,7 +47,7 @@ def get_asos_df(session):
     dfs = {}
     for model in [Asos_Jfk,Asos_Jrb,Asos_Lga,Asos_Nyc]:
         d = timedelta(days=-7)
-        end = datetime.now()
+        end = get_now()
         start = end + d
 
         columns = [getattr(model,'local_valid'),getattr(model,'tmpf'),getattr(model,'relh'),getattr(model,'sknt'),getattr(model,'mslp')]

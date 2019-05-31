@@ -1,7 +1,8 @@
 from wsutil.models import Observation,Asos_Jfk,Asos_Jrb,Asos_Lga,Asos_Nyc
 from sqlalchemy import desc,func
 from collections import OrderedDict
-from datetime import datetime,date,time
+from datetime import datetime,date
+from dateutil import tz
 from operator import attrgetter
 
 ASRC_DATA_VAR = ['time', 'temp_f', 'dewpoint_f','heat_index_f', 
@@ -60,6 +61,10 @@ def asrc_averages(session,period='day'):
 
     assert(period == 'day' or period == 'month')
 
+    tzlocal = tz.tzoffset('EST', -14400)
+    utcnow = datetime.utcnow().replace(tzinfo=tz.tzutc())
+    now = utcnow.astimezone(tzlocal)
+
     high_low_var = ['temp_f', 'dewpoint_f','heat_index_f', 'pressure_mb',  'relative_humidity', 'wind_kt', 'windchill_f']
 
     high_var = ['solar_radiation', 'uv_index']
@@ -70,18 +75,24 @@ def asrc_averages(session,period='day'):
 
     if period == 'day':
         for var in high_low_var:    
-            high = session.query(func.max(getattr(Observation,var))).filter(Observation.date == date.today()).scalar()
-            low = session.query(func.min(getattr(Observation,var))).filter(Observation.date == date.today()).scalar()
-            avg = round(session.query(func.avg(getattr(Observation,var))).filter(Observation.date == date.today()).scalar(),1)
+            high = session.query(func.max(getattr(Observation,var))).filter(Observation.date == now.date()).scalar()
+            low = session.query(func.min(getattr(Observation,var))).filter(Observation.date == now.date()).scalar()
+            avg = session.query(func.avg(getattr(Observation,var))).filter(Observation.date == now.date()).scalar()
+
+            if avg is not None:
+                avg = round(avg,2)
 
             hl_results[ASRC_DATA_VAR_ABBREV[var]] = {'high':high,'low':low,'avg':avg}
 
         return {'hl':hl_results}
     elif period == 'month':
         for var in high_low_var:    
-            high = session.query(func.max(getattr(Observation,var))).filter(func.extract('month',Observation.date) == date.today().month and func.extract('year',Observation.date) == date.today().year).scalar()
-            low = session.query(func.min(getattr(Observation,var))).filter(func.extract('month',Observation.date) == date.today().month and func.extract('year',Observation.date) == date.today().year).scalar()
-            avg = round(session.query(func.avg(getattr(Observation,var))).filter(func.extract('month',Observation.date) == date.today().month and func.extract('year',Observation.date) == date.today().year).scalar(),1)
+            high = session.query(func.max(getattr(Observation,var))).filter(func.extract('month',Observation.date) == now.month and func.extract('year',Observation.date) == now.year).scalar()
+            low = session.query(func.min(getattr(Observation,var))).filter(func.extract('month',Observation.date) == now.month and func.extract('year',Observation.date) == now.year).scalar()
+            avg = session.query(func.avg(getattr(Observation,var))).filter(func.extract('month',Observation.date) == now.today().month and func.extract('year',Observation.date) == now.today().year).scalar()
+
+            if avg is not None:
+                avg = round(avg,2)
 
             hl_results[ASRC_DATA_VAR_ABBREV[var]]= {'high':high,'low':low,'avg':avg}
 

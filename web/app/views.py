@@ -10,6 +10,7 @@ from app.graphs import *
 from collections import OrderedDict
 
 from datetime import datetime
+from dateutil import tz
 
 # KEYS
 META_DATA = ['station_name', 'location', 'latitude', 'longitude', 'timezone']
@@ -29,8 +30,12 @@ FACTORS = [
 
 @app.route('/')
 def index():
-    today = datetime.today().strftime('%A, %b %d')
-    month = datetime.today().strftime('%B %Y')
+    tzlocal = tz.tzoffset('EST', -14400)
+    utcnow = datetime.utcnow().replace(tzinfo=tz.tzutc())
+    now = utcnow.astimezone(tzlocal)
+
+    today = now.strftime('%A, %b %d')
+    month = now.strftime('%B %Y')
 
     nyc = nyc_current(db.session)
     asrc_today_avg = asrc_averages(db.session,'day')
