@@ -12,10 +12,10 @@ class Config(object):
 
 class ProductionConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = config['DATABASE']['prod'] #os.environ['PROD_URI']
+    SQLALCHEMY_DATABASE_URI = config['DATABASE']['prod']
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = config['DATABASE']['dev'] #os.environ['DEV_URI']
+    SQLALCHEMY_DATABASE_URI = config['DATABASE']['dev']

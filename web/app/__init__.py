@@ -11,10 +11,10 @@ app = Flask(__name__, instance_relative_config=True)
 
 #Project Config
 config = configparser.ConfigParser()
-config.read('../config.ini')
+config.read(os.environ['WS_CONFIG'])
 
 # Flask Config
-app.config.from_object('config.ProductionConfig')
+app.config.from_object('config.DevelopmentConfig')
 
 # Database
 db = SQLAlchemy(app)
